@@ -1,0 +1,8 @@
+<p>login works!</p>
+
+Mail: <input type="text" [(ngModel)]="mail">
+Contraseña: <input type="text" [(ngModel)]="contrasenia">
+
+<button (click)="loguearse()">Loguearse</button>
+
+<app-usuario (rellenarEvent)="rellenar($event)"></app-usuario>

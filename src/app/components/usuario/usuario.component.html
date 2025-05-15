@@ -1,0 +1,17 @@
+<p>usuario works!</p>
+
+<!--IF-->
+@if (hayUsuarios) {
+    <h1>Hay usuarios!</h1>
+} @else {
+    <h1>No hay usuarios!</h1>
+}
+
+<!--For-->
+@for (usuario of usuarios(); track usuario){
+    <div class="d-flex">
+        <p>{{usuario.mail}} |</p>
+        <p>{{usuario.contrasenia}} |</p>
+        <button (click)="rellenar(usuario.mail, usuario.contrasenia)">CompletarCampos</button>
+    </div>
+}

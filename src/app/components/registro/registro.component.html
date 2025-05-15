@@ -1,0 +1,16 @@
+<p>registro works!</p>
+
+@if (hayError)
+{
+    <h1 class="text-danger">Error</h1>
+}
+<h1 class="text-danger">{{error()?.message}}</h1>
+
+
+
+Mail: <input type="text" [(ngModel)]="mail">
+Contraseña: <input type="text" [(ngModel)]="contrasenia">
+
+<button (click)="registrarse()">Registrase</button>
+
+

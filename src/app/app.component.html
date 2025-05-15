@@ -1,0 +1,32 @@
+<div class="container mt-1 border border-success">
+
+  <div class="d-flex gap-1 m-1">
+    <a routerLink="/" class="btn btn-success">Home</a>
+    <a routerLink="about" class="btn btn-success">About Me</a>
+    <a routerLink="listado" class="btn btn-success">Listado</a>
+
+    @if (auth.usuarioActual === null)
+    {
+    <a routerLink="login" class="btn btn-success">Login</a>
+    <a routerLink="registro" class="btn btn-success">Registro</a>
+    } @else {
+    <a (click)="cerrarSesion()" class="btn btn-danger">Cerrar Sesion</a>
+    }
+  </div>
+</div>
+
+
+<div class="container mt-1 border border-success">
+  @if (auth.usuarioActual === null)
+  {
+  } @else {
+  <h1>Hola {{auth.usuarioActual.email}}</h1>
+  }
+
+  <router-outlet />
+</div>
+
+<div class="container mt-1 border border-success">
+
+  <app-footer></app-footer>
+</div>

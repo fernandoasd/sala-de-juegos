@@ -1,0 +1,19 @@
+<p>listado autos!</p>
+
+<!--IF-->
+@if (hayAutos) {
+    <h1>Hay autos!</h1>
+} @else {
+    <h1>No hay autos!</h1>
+}
+
+<!--For-->
+@for (auto of autos(); track auto){
+    <div class="d-flex">
+        <p>{{auto.id}} |</p>
+        <p>{{auto.marca}} |</p>
+        <p>| {{auto.modelo}} |</p>
+        <p>| {{auto.precio}} |</p>
+        <button (click)="eliminar(auto.id)">Eliminar</button>
+    </div>
+}
