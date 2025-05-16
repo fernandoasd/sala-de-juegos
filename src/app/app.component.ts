@@ -4,11 +4,10 @@ import { DatabaseService } from './services/database.service';
 import { Auto } from './classes/auto';
 import { AuthService } from './services/auth.service';
 import { FooterComponent } from './components/footer/footer.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, FooterComponent, NavbarComponent],
+  imports: [RouterOutlet, RouterLink, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

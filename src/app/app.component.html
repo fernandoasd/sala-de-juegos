@@ -1,32 +1,38 @@
-<div class="container mt-1 border border-success">
+<div class="bg-dark text-white pt-4 pb-2">
+  <div class="container mt-1">
 
-  <div class="d-flex gap-1 m-1">
-    <a routerLink="/" class="btn btn-success">Home</a>
-    <a routerLink="about" class="btn btn-success">About Me</a>
-    <a routerLink="listado" class="btn btn-success">Listado</a>
+    <div class="d-flex gap-1 mb-4">
+      <a routerLink="/" class="btn btn-success">Home</a>
+      <a routerLink="about" class="btn btn-success">About Me</a>
+      <a routerLink="listado" class="btn btn-success">Listado</a>
 
-    @if (auth.usuarioActual === null)
-    {
-    <a routerLink="login" class="btn btn-success">Login</a>
-    <a routerLink="registro" class="btn btn-success">Registro</a>
-    } @else {
-    <a (click)="cerrarSesion()" class="btn btn-danger">Cerrar Sesion</a>
-    }
+      @if (auth.usuarioActual === null)
+      {
+      <a routerLink="login" class="btn btn-success">Login</a>
+      <a routerLink="registro" class="btn btn-success">Registro</a>
+      } @else {
+      <a (click)="cerrarSesion()" class="btn btn-danger">Cerrar Sesion</a>
+      }
+      
+        @if (auth.usuarioActual === null)
+        {
+        } @else {
+          <h5 class="ms-auto">Usuario: {{auth.usuarioActual.email}}</h5>
+        }
+    </div>
   </div>
-</div>
+
+  <hr class="bg-light" />
 
 
-<div class="container mt-1 border border-success">
-  @if (auth.usuarioActual === null)
-  {
-  } @else {
-  <h1>Hola {{auth.usuarioActual.email}}</h1>
-  }
+  <div class="container mt-1">
+    <router-outlet />
+  </div>
 
-  <router-outlet />
-</div>
+  <hr class="bg-light"/>
 
-<div class="container mt-1 border border-success">
+  <div class="container mt-1">
 
-  <app-footer></app-footer>
+    <app-footer></app-footer>
+  </div>
 </div>

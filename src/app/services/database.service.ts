@@ -23,7 +23,7 @@ export class DatabaseService {
     //eq = equal | ===
     //limit
     //offset
-    const { data, error, count, status, statusText } = await this.tablaAutos.select("*").lt("precio", 1000);
+    const { data, error, count, status, statusText } = await this.tablaAutos.select("*");
     const autos = data as Auto[]; //de esta forma data va a ser un array de Autos
     console.log("listar", autos, error, count, status, statusText);
     return autos;

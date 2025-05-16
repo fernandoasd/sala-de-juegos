@@ -1,19 +1,55 @@
-<p>listado autos!</p>
 
-<!--IF-->
-@if (hayAutos) {
+<!-- @if (hayAutos) {
     <h1>Hay autos!</h1>
 } @else {
     <h1>No hay autos!</h1>
 }
 
-<!--For-->
 @for (auto of autos(); track auto){
     <div class="d-flex">
-        <p>{{auto.id}} |</p>
         <p>{{auto.marca}} |</p>
+        <p>{{auto.id}} |</p>
         <p>| {{auto.modelo}} |</p>
         <p>| {{auto.precio}} |</p>
         <button (click)="eliminar(auto.id)">Eliminar</button>
     </div>
-}
+} -->
+
+
+    <div class="container">
+        <h2 class="mb-4">Lista de Autos</h2>
+        <!--IF-->
+        @if (hayAutos) {
+            <h1>Hay autos!</h1>
+        } @else {
+            <h1>No hay autos!</h1>
+        }
+
+        <table class="table table-dark table-hover table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>marca</th>
+                    <th>modelo</th>
+                    <th>precio</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            @for (auto of autos(); track auto){
+            <tbody>
+                <tr>
+                    <td>{{auto.id}}</td>
+                    <td>{{auto.marca}}</td>
+                    <td>{{auto.modelo}}</td>
+                    <td>{{auto.precio}}</td>
+                    <td class="text-center">
+                        <button (click)="eliminar(auto.id)" class="btn btn-sm btn-danger me-2" >Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+
+            }
+
+
+        </table>
+    </div>
