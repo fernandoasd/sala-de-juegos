@@ -1,5 +1,3 @@
-<p>registro works!</p>
-
 @if (hayError)
 {
     <h1 class="text-danger">Error</h1>
@@ -7,10 +5,34 @@
 <h1 class="text-danger">{{error()?.message}}</h1>
 
 
+<!-- Login box -->
+        <div class="mx-auto mt-2">
+            <div class="login-box">
+                <h2 class="text-center mb-4">Registrarse</h2>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo electrónico</label>
+                    <input type="email" [(ngModel)]="mail" class="form-control" id="email"
+                        placeholder="tucorreo@ejemplo.com" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" [(ngModel)]="contrasenia" class="form-control" id="password"
+                        placeholder="••••••••" required>
+                </div>
+                <div class="d-grid">
+                    <button (click)="registrarse()" class="btn btn-success">Registrarse</button>
+                </div>
+                <div class="text-center">
+                    <a href="#" class="text-light text-decoration-none">¿Olvidaste tu contraseña?</a><br>
+                    <a href="#" class="text-light text-decoration-none">Crear una cuenta</a>
+                </div>
+            </div>
+        </div>
 
+<!-- 
 Mail: <input type="text" [(ngModel)]="mail">
 Contraseña: <input type="text" [(ngModel)]="contrasenia">
 
-<button (click)="registrarse()">Registrase</button>
+<button (click)="registrarse()">Registrase</button> -->
 
 
