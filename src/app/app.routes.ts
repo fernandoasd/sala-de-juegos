@@ -16,7 +16,8 @@ export const routes: Routes = [
     { path: "listado", title: "Listado", loadComponent: () => import("./pages/lista-juegos/lista-juego.component").then((archivo) => archivo.ListaJuegoComponent) },
     { path: "registro", title: "Registro", loadComponent: () => import("./pages/registro/registro.component").then((archivo) => archivo.RegistroComponent) },
     {
-        path: "juegos", title: "Juegos", loadChildren: () => import("./pages/juegos/juegos.routes").then((archivo) => archivo.routes),
+        path: "juegos", title: "Juegos", loadComponent: () => import("./pages/juegos/juegos.component").then((archivo) => archivo.JuegosComponent) ,
+        loadChildren: () => import("./pages/juegos/juegos.routes").then((archivo) => archivo.routes),
     },
     { path: "", redirectTo: "/home", pathMatch: "full" },
     { path: "**", title: "Error 404", loadComponent: () => import("./pages/error/error.component").then((archivo) => archivo.ErrorComponent) }, //wildcard route 404 page
