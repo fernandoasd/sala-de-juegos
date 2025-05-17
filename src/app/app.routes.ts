@@ -18,7 +18,6 @@ export const routes: Routes = [
     {
         path: "juegos", title: "Juegos", loadChildren: () => import("./pages/juegos/juegos.routes").then((archivo) => archivo.routes),
     },
-
     { path: "", redirectTo: "/home", pathMatch: "full" },
     { path: "**", title: "Error 404", loadComponent: () => import("./pages/error/error.component").then((archivo) => archivo.ErrorComponent) }, //wildcard route 404 page
 ];
