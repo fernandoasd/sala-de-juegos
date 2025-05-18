@@ -11,13 +11,15 @@ import { NavbarComponent } from "./pages/navbar/navbar.component";
   imports: [RouterOutlet, FooterComponent, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
+  
 })
 export class AppComponent {
-  title = 'saladejuegos';
+
+  title = 'saladejuegos'; 
   databaseService = inject(DatabaseService);
   sp = inject(AuthService);
   auth = inject(AuthService);
-  
+
   constructor() {
     let auto = new Auto("Ford", "Falcon", 900)
     // this.databaseService.crear(auto);
