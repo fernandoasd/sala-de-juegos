@@ -28,8 +28,7 @@ export class UsuarioService {
   }
 
   async buscarUsuarioMail(mail: string) {
-    const { data, error, count, status, statusText } = await this.tablaUsuarios.select("*").eq("mail", mail);
-    return data;
+    return await this.tablaUsuarios.select("*").eq("mail", mail);
   }
 
   async buscarUsuarioId(id: string) {
@@ -60,7 +59,7 @@ export class UsuarioService {
   }
 
   async cargarUsuario(mail: string) {
-    const data = await this.buscarUsuarioMail(mail);
+    const {data, error} = await this.buscarUsuarioMail(mail);
     this.usuarioActual = data!;
     // console.log(this.usuarioActual);
     return data;

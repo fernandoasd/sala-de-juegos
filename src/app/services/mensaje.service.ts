@@ -12,7 +12,8 @@ export class MensajeService {
   }
 
   async traerTodos(){
-    const  {data, error} = await this.tabla_mensajes.select("id, created_at ,mensaje, usuarios(id, nombre)");
+    const  {data, error} = await this.tabla_mensajes
+    .select("id, created_at ,mensaje, usuarios(id, nombre)");
     console.log("Mensajes:");
     console.log(data, error);
     return data as any[];

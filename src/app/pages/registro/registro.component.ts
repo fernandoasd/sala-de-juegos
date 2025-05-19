@@ -27,7 +27,7 @@ export class RegistroComponent {
   async registrarse() {
     const respuesta = await this.auth.crearCuenta(this.mail, this.contrasenia);
     if (respuesta.error === null) {
-      this.tablaUsuario.crear(new Usuario(this.mail, this.contrasenia,
+      this.tablaUsuario.crear(new Usuario(this.mail.toLowerCase(), this.contrasenia,
          this.nombre, this.urlImage, this.edad));
     } else {
       this.error.set(respuesta.error);
