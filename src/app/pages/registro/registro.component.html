@@ -19,6 +19,16 @@
                     <input type="password" [(ngModel)]="contrasenia" class="form-control" id="password"
                         placeholder="••••••••" required>
                 </div>
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">nombre</label>
+                    <input type="nombre" [(ngModel)]="nombre" class="form-control" id="nombre"
+                        placeholder="Ramiro" required>
+                </div>
+                <div class="mb-3">
+                    <label for="edad" class="form-label">Edad</label>
+                    <input type="edad" [(ngModel)]="edad" class="form-control" id="edad"
+                        placeholder="18" required>
+                </div>
                 <div class="d-grid">
                     <button (click)="registrarse()" class="btn btn-success">Registrarse</button>
                 </div>

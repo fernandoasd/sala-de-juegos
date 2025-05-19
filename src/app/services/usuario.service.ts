@@ -7,12 +7,12 @@ import { Usuario } from '../classes/usuario';
 })
 export class UsuarioService {
   db = inject(SupabaseService);
+  usuarioActual: any[] = [];
   tablaUsuarios;
 
   constructor() {
-
-    this.tablaUsuarios = this.db.supabase.from("usuariosAutentificados")
-    console.log(this.db);
+    this.tablaUsuarios = this.db.supabase.from("usuarios")
+    // console.log(this.db);
   }
 
   async listar() {
@@ -22,6 +22,20 @@ export class UsuarioService {
     return usuarios;
   }
 
+  async buscarUsuarioContrasenia(mail: string, password: string) {
+    const { data, error, count, status, statusText } = await this.tablaUsuarios.select("*").eq("mail", mail).eq("contrasenia", password);
+    return data;
+  }
+
+  async buscarUsuarioMail(mail: string) {
+    const { data, error, count, status, statusText } = await this.tablaUsuarios.select("*").eq("mail", mail);
+    return data;
+  }
+
+  async buscarUsuarioId(id: string) {
+    return await this.tablaUsuarios.select("*").eq("id", id);
+  }
+
   async crear(usuario: Usuario) {
     const { data, error, count, status, statusText } = await this.tablaUsuarios.insert(usuario);
     console.log("crear", data, error, count, status, statusText);
@@ -29,7 +43,7 @@ export class UsuarioService {
 
   async modificar(usuario: Usuario) {
     // UPDATE ... where id = n
-    const { data, error, count, status, statusText } = await this.tablaUsuarios.update(usuario).eq("id", usuario.id);
+    const { data, error, count, status, statusText } = await this.tablaUsuarios.update(usuario).eq("id", usuario.nombre);
     console.log("modificar", data, error, count, status, statusText);
   }
 
@@ -37,5 +51,18 @@ export class UsuarioService {
     if (id === undefined) return;
     const { data, error, count, status, statusText } = await this.tablaUsuarios.delete().eq("id", id);
     console.log("eliminar", data, error, count, status, statusText);
+  }
+
+  async cargarUsuarioContrasenia(mail: string, password: string) {
+    const data = await this.buscarUsuarioContrasenia(mail, password);
+    this.usuarioActual = data!;
+    console.log(this.usuarioActual);
+  }
+
+  async cargarUsuario(mail: string) {
+    const data = await this.buscarUsuarioMail(mail);
+    this.usuarioActual = data!;
+    // console.log(this.usuarioActual);
+    return data;
   }
 }

@@ -1,0 +1,49 @@
+<p>mensajeria works!</p>
+<div class="card shadow-sm border-0">
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0">Chat en vivo</h5>
+  </div>
+
+  <div class="card-body p-3" style="max-height: 400px; overflow-y: auto;">
+    <ul class="list-unstyled">
+      <li *ngFor="let mensaje of mensajes()" class="mb-3">
+        <div class="d-flex align-items-start">
+          <div class="me-2">
+            <span class="badge bg-secondary">{{ mensaje.created_at | date: 'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div>
+            <strong>{{ mensaje.usuarios.nombre }}:</strong><br />
+            <span>{{ mensaje.mensaje }}</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card-footer bg-light">
+    <div class="input-group">
+      <input
+        [(ngModel)]="new_mensaje"
+        class="form-control"
+        type="text"
+        placeholder="Escribe un mensaje..."
+        (keyup.enter)="enviarMensajes()"
+      />
+      <button class="btn btn-primary" (click)="enviarMensajes()">Enviar</button>
+    </div>
+  </div>
+</div>
+
+  <!-- <ul class="list-group mb-3">
+    <li *ngFor="let mensaje of mensajes()" class="list-group-item">
+      {{mensaje.created_at | date: 'dd/MM/yyyy HH:mm'}} {{ mensaje.usuarios.nombre }}: {{mensaje.mensaje}}
+    </li>
+  </ul>
+
+  
+  <input [(ngModel)]="new_mensaje" class="form-control mb-2"><button (click)="enviarMensajes()">Enviar</button>
+   -->
+  <!-- @for (m of mensajes(); track m) {
+      <p>{{m.created_at}}  Usuario: {{m.id_usuario}}</p>
+      <p>{{m.mensaje}}</p>
+  } -->

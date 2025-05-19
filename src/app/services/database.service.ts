@@ -7,10 +7,10 @@ import { SupabaseService } from './supabase.service';
 })
 export class DatabaseService {
   db = inject(SupabaseService);
+  tabla: string = "";
   tablaAutos;
 
   constructor() {
-
     this.tablaAutos = this.db.supabase.from("autos")
     console.log(this.db);
   }

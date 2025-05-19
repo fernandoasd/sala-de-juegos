@@ -6,14 +6,11 @@ import { Routes } from '@angular/router';
 // denegar o permitir la denegacion de ciertas paginas
 
 export const routes: Routes = [
-    {
-        path: "home", title: "Sala de Juegos",loadComponent: () => import("./pages/home/home.component").then((archivo) => archivo.HomeComponent)
-    },
-    { path: "about", title: "About Me",loadComponent: () => import("./pages/about/about.component").then((archivo) => archivo.AboutComponent)
-     },
-    { path: "login", title: "Login", loadComponent: () => import("./pages/login/login.component").then((archivo) => archivo.LoginComponent)
-    },
+    {path: "home", title: "Sala de Juegos",loadComponent: () => import("./pages/home/home.component").then((archivo) => archivo.HomeComponent)},
+    { path: "about", title: "About Me",loadComponent: () => import("./pages/about/about.component").then((archivo) => archivo.AboutComponent)},
+    { path: "login", title: "Login", loadComponent: () => import("./pages/login/login.component").then((archivo) => archivo.LoginComponent)},
     { path: "listado", title: "Listado", loadComponent: () => import("./pages/lista-juegos/lista-juego.component").then((archivo) => archivo.ListaJuegoComponent) },
+    { path: "chat", title: "Chat", loadComponent: () => import("./pages/mensajeria/mensajeria.component").then((archivo) => archivo.MensajeriaComponent) },
     { path: "registro", title: "Registro", loadComponent: () => import("./pages/registro/registro.component").then((archivo) => archivo.RegistroComponent) },
     {
         path: "juegos", title: "Juegos", loadComponent: () => import("./pages/juegos/juegos.component").then((archivo) => archivo.JuegosComponent) ,

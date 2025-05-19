@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { UsuarioComponent } from '../usuario/usuario.component';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,7 @@ import { UsuarioComponent } from '../usuario/usuario.component';
 })
 export class LoginComponent {
   auth = inject(AuthService);
+  usuario = inject(UsuarioService);
   mail: string = "";
   contrasenia: string = "";
 
@@ -19,7 +21,13 @@ export class LoginComponent {
     this.contrasenia = array[1];
   }
 
-  loguearse(){
-    this.auth.iniciarSesion(this.mail, this.contrasenia);
+  async loguearse(){
+    await this.auth.iniciarSesion(this.mail, this.contrasenia).then(({data, error}) => {
+      if (error === null){
+        this.usuario.cargarUsuario(this.mail);
+      }
+      return {data, error};
+    });
+
   }
 }

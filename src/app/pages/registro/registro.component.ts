@@ -13,18 +13,22 @@ import { AuthError } from '@supabase/supabase-js';
 })
 export class RegistroComponent {
   auth = inject(AuthService);
-  usuario = inject(UsuarioService);
+  tablaUsuario = inject(UsuarioService);
   data: any[] | null = null;
   error= signal<AuthError | null>(null);
 
   mail: string = "";
   contrasenia: string = "";
+  nombre: string = "";
+  edad: number = 0;
+  urlImage: string = "";
   hayError: boolean = false;
 
   async registrarse() {
     const respuesta = await this.auth.crearCuenta(this.mail, this.contrasenia);
     if (respuesta.error === null) {
-      this.usuario.crear(new Usuario(this.mail, this.contrasenia));
+      this.tablaUsuario.crear(new Usuario(this.mail, this.contrasenia,
+         this.nombre, this.urlImage, this.edad));
     } else {
       this.error.set(respuesta.error);
       this.hayError = true;
