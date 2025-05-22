@@ -1,5 +1,5 @@
-<div class="card shadow-sm border-0 bg-img">
-  <div class="card-header bg-secondary text-white">
+<div class="container card shadow-sm border-0 bg-img p-0">
+  <div class="card-header bg-secondary text-white m-0">
     <h5 class="mb-0">Chat en vivo</h5>
   </div>
 
@@ -12,7 +12,7 @@
           }">
             <strong class="">{{ mensaje.usuarios?.nombre }}:</strong><br/>
             {{ mensaje.mensaje }}<br/>
-            <span class="badge rounded-pill ms-auto">{{ mensaje.created_at | date: 'HH:mm' }}</span>
+            <span class="badge rounded-pill ms-auto">{{ mensaje.created_at | date: 'dd/MM/yyyy HH:mm' }}</span>
           </div>
         </div>
       </li>

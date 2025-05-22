@@ -34,7 +34,6 @@ export class MensajeriaComponent implements OnInit {
   async ngOnInit() {
     // Obtener mensajes existentes
     this.miId = (await this.supabaseService.obtenerUsuarioMail(this.auth.usuarioActual?.email!)).data![0].id;
-    console.log("miId: ---------------------------------", this.miId);
     this.supabaseService.obtenerMensajes().then(({ data, error }) => {
       console.log("data", data);
       this.mensajes.set([...data as any[]]);
@@ -44,9 +43,6 @@ export class MensajeriaComponent implements OnInit {
       if (nuevo) {
         this.supabaseService.supabase.from("usuarios").select("*").eq("id", nuevo.id_usuario)
       .then(({ data, error }) => {
-        console.log("nuevo.id_usuario: ---------------------------------", nuevo.id_usuario);
-
-        console.log();
         console.log("enviar, data", data);
         this.mensajes.update((mensajeAnterior)=>{
           nuevo["usuarios"] = {
