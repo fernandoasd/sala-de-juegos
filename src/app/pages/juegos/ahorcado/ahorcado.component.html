@@ -1,1 +1,36 @@
-<p>ahorcado works!</p>
+<p></p>
+
+
+<div class="container m-1">
+    @if (estadoJuego === "jugando") {
+    <div class="display-teclado-container">
+        <h1>
+            @for (item of arrayPalabra; track $index) {
+            @if (item.adivinada){
+            <span>{{item.letra}} </span>
+            } @else {
+            <span>_ </span>
+            }
+            }
+        </h1>
+
+        @for (letra of abecedario; track $index) {
+        <button class="{{claseInitBoton}}" (click)="presionarTecla($index.toString())" id="btn-{{$index}}"> {{letra.toUpperCase()}}</button>
+        }
+
+
+    </div>
+    } @else {
+        <div class="alerta-container" [ngClass]='{
+            "bg-danger": estadoJuego === "perdido",
+            "bg-success": estadoJuego === "ganado"
+        }'>
+        <h1>{{mensaje}}</h1>
+        </div>
+    }
+</div>
+
+
+        <button (click)="ganarJuego()"> Ganar</button>
+        <button (click)="perderJuego()"> Perder</button>
+        <button (click)="inicializarJuego()"> Reiniciar</button>

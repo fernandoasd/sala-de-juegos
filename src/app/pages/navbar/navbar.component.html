@@ -7,13 +7,13 @@
     <div class="collapse navbar-collapse" id="mynavbar">
       <ul class="navbar-nav me-auto gap-1">
         <li class="nav-item">
-          <a routerLink="/" class="btn btn-success">Home</a>
+          <a routerLink="/home" class="btn btn-success">Home</a>
         </li>
         <li class="nav-item">
           <a routerLink="juegos" class="btn btn-success">Juegos</a>
         </li>
         <li class="nav-item">
-          <a routerLink="about" class="btn btn-success">About Me</a>
+          <a routerLink="/about" class="btn btn-success">About Me</a>
         </li>
         <li class="nav-item">
           <a routerLink="listado" class="btn btn-success">Listado</a>
@@ -29,7 +29,6 @@
         <li class="nav-item">
           <a routerLink="registro" class="btn btn-success">Registro</a>
         </li>
-
         } @else {
         <li class="nav-item">
           <a (click)="cerrarSesion()" class="btn btn-danger">Cerrar Sesion</a>

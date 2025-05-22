@@ -11,6 +11,8 @@ export class SupabaseService {
     throw new Error('Method not implemented.');
   }
   supabase: SupabaseClient<any, "public", any>;
+
+
   constructor() {
     this.supabase = createClient(
       "https://zvfexktcpppuodwshfeb.supabase.co",

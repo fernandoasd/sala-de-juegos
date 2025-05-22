@@ -1,0 +1,8 @@
+<p>http-exampple works!</p>
+
+<h1> Avellaneda:</h1>
+<h2 *ngFor=" let linea of datos()"> 
+    <!-- {temperature: '19 °C', wind: '6 km/h', description: 'Sunny', forecast: Array(3)} -->
+    {{linea["temperature"]}} - {{linea["wind"]}} - {{linea["description"]}} 
+    <!-- Forecast: {{linea["forecast"] | json}} -->
+</h2>
