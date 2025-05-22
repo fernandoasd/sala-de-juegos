@@ -20,7 +20,7 @@ export class MensajeriaComponent implements OnInit {
   usuarioService = inject(UsuarioService);
   new_mensaje: string = "";
   nombreActual: string = "";
-  id_usuario: number = 0;
+  miId: number = 0;
 
   mensajes = signal<any[]>([]);
 
@@ -33,6 +33,8 @@ export class MensajeriaComponent implements OnInit {
 
   async ngOnInit() {
     // Obtener mensajes existentes
+    this.miId = (await this.supabaseService.obtenerUsuarioMail(this.auth.usuarioActual?.email!)).data![0].id;
+    console.log("miId: ---------------------------------", this.miId);
     this.supabaseService.obtenerMensajes().then(({ data, error }) => {
       console.log("data", data);
       this.mensajes.set([...data as any[]]);
@@ -42,6 +44,9 @@ export class MensajeriaComponent implements OnInit {
       if (nuevo) {
         this.supabaseService.supabase.from("usuarios").select("*").eq("id", nuevo.id_usuario)
       .then(({ data, error }) => {
+        console.log("nuevo.id_usuario: ---------------------------------", nuevo.id_usuario);
+
+        console.log();
         console.log("enviar, data", data);
         this.mensajes.update((mensajeAnterior)=>{
           nuevo["usuarios"] = {
@@ -68,7 +73,7 @@ export class MensajeriaComponent implements OnInit {
     console.log("mi email", this.auth.usuarioActual.email);
     await this.supabaseService.obtenerUsuarioMail(this.auth.usuarioActual.email!)
       .then(({ data, error }) => {
-        this.id_usuario = data![0].id;
+        this.miId = data![0].id;
         this.nombreActual = data![0].nombre;
         console.log("enviar, data", data);
         this.mensajesService.insertar(this.new_mensaje, data![0].id);

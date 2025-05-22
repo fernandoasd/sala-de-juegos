@@ -1,19 +1,18 @@
-<p>mensajeria works!</p>
-<div class="card shadow-sm border-0">
-  <div class="card-header bg-primary text-white">
+<div class="card shadow-sm border-0 bg-img">
+  <div class="card-header bg-secondary text-white">
     <h5 class="mb-0">Chat en vivo</h5>
   </div>
 
-  <div class="card-body p-3" style="max-height: 400px; overflow-y: auto;">
-    <ul class="list-unstyled">
-      <li *ngFor="let mensaje of mensajes()" class="mb-3">
-        <div class="d-flex align-items-start">
-          <div class="me-2">
-            <span class="badge bg-secondary">{{ mensaje.created_at | date: 'dd/MM/yyyy HH:mm' }}</span>
-          </div>
-          <div>
-            <strong>{{ mensaje.usuarios?.nombre }}:</strong><br />
-            <span>{{ mensaje.mensaje }}</span>
+  <div class="card-body p-3" style="max-height: 55vh; overflow-y: auto;">
+    <ul class="list-unstyled bm-danger">
+      <li class="d-flex ms-auto" *ngFor="let mensaje of mensajes()" class="mb-3">
+        <div class="d-flex text-white p-1">
+          <div class="bg-secondary p-2 border border-dark border-1 rounded-3" [ngClass]="{
+          'bg-success ms-auto': mensaje.usuarios.id === miId
+          }">
+            <strong class="">{{ mensaje.usuarios?.nombre }}:</strong><br/>
+            {{ mensaje.mensaje }}<br/>
+            <span class="badge rounded-pill ms-auto">{{ mensaje.created_at | date: 'HH:mm' }}</span>
           </div>
         </div>
       </li>
@@ -47,3 +46,11 @@
       <p>{{m.created_at}}  Usuario: {{m.id_usuario}}</p>
       <p>{{m.mensaje}}</p>
   } -->
+
+
+
+
+  <!-- [ngClass]="{
+          'ms-auto': mensaje.id_usuario === miId,
+          'me-auto': mensaje.id_usuario === miId
+        }" -->

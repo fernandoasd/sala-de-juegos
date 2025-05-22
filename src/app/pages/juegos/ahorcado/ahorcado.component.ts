@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Letra } from "./letra.interface";
 import { EstadoJuego } from "./estadoJuego.enum";
-import { CommonModule, NgIf } from "@angular/common";
+import { CommonModule } from "@angular/common";
 
 
 
