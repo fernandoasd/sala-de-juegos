@@ -10,8 +10,8 @@
           <div class="bg-secondary p-2 border border-dark border-1 rounded-3" [ngClass]="{
           'bg-success ms-auto': mensaje.usuarios.id === miId
           }">
-            <strong class="">{{ mensaje.usuarios?.nombre }}:</strong><br/>
-            {{ mensaje.mensaje }}<br/>
+            <strong class="">{{ mensaje.usuarios?.nombre }}:</strong>
+            <h3>{{ mensaje.mensaje }}</h3><br/>
             <span class="badge rounded-pill ms-auto">{{ mensaje.created_at | date: 'dd/MM/yyyy HH:mm' }}</span>
           </div>
         </div>
