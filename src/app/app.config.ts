@@ -8,5 +8,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideRouter(routes),
-    provideHttpClient(withFetch(),)]
+    provideHttpClient(
+      withFetch(),
+    )]
 };

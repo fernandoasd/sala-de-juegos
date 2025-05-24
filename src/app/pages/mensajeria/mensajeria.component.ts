@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, effect, ElementRef, inject, Injector, OnInit, runInInjectionContext, signal, ViewChild } from '@angular/core';
 import { SupabaseService } from '../../services/supabase.service';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -12,7 +12,7 @@ import { MensajeService } from '../../services/mensaje.service';
   templateUrl: './mensajeria.component.html',
   styleUrl: './mensajeria.component.css'
 })
-export class MensajeriaComponent implements OnInit {
+export class MensajeriaComponent implements OnInit, AfterViewInit {
   // cliente = inject(ChatService);
   mensajesService = inject(MensajeService);
   supabaseService = inject(SupabaseService);
@@ -23,41 +23,74 @@ export class MensajeriaComponent implements OnInit {
   miId: number = 0;
 
   mensajes = signal<any[]>([]);
+  chat: any;
 
 
   constructor(private cdr: ChangeDetectorRef) {
+
     // this.mensajesService.traerTodos().then((data) =>{
     //   this.mensajes.set([...data]);
     // });
+  }
+
+  @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
+
+  // ngAfterViewChecked() {
+  //   this.scrollToBottom();
+  // }
+  private injector = inject(Injector);
+
+  ngAfterViewInit(): void {
+    runInInjectionContext(this.injector, () => {
+      effect(() => {
+        this.chat = document.getElementById("chat-body");
+        this.mensajes(); // reactividad
+        this.scrollUltimoHijo();
+      });
+    });
+  }
+
+
+  scrollUltimoHijo() {
+    setTimeout(() => {
+      let ultimo = this.chat?.lastElementChild?.lastElementChild;
+      console.log("ultimo hijo: ", ultimo);
+      this.chat.scrollTop = this.chat.scrollHeight;
+    })
   }
 
   async ngOnInit() {
     // Obtener mensajes existentes
     this.miId = (await this.supabaseService.obtenerUsuarioMail(this.auth.usuarioActual?.email!)).data![0].id;
     this.supabaseService.obtenerMensajes().then(({ data, error }) => {
-      console.log("data", data);
+      // console.log("data", data);
       this.mensajes.set([...data as any[]]);
     });
+
     // Suscribirse al canal para escuchar nuevos mensajes
     this.supabaseService.onMensajesInsert((nuevo) => {
       if (nuevo) {
         this.supabaseService.supabase.from("usuarios").select("*").eq("id", nuevo.id_usuario)
-      .then(({ data, error }) => {
-        console.log("enviar, data", data);
-        this.mensajes.update((mensajeAnterior)=>{
-          nuevo["usuarios"] = {
-            id: data![0].id,
-            nombre: data![0].nombre
-          }
-          console.log("nuevo:  ", nuevo);
-          mensajeAnterior.push(nuevo);
-          console.log("nuevo mensaje", mensajeAnterior);
-          this.cdr.detectChanges();
-        return mensajeAnterior;
-        });
-        return data;
-      });
-        
+          .then(({ data, error }) => {
+            // console.log("enviar, data", data);
+            this.mensajes.update((mensajeAnterior) => {
+              nuevo["usuarios"] = {
+                id: data![0].id,
+                nombre: data![0].nombre
+              }
+              console.log("nuevo:  ", nuevo);
+              mensajeAnterior.push(nuevo);
+              // console.log("nuevo mensaje", mensajeAnterior);
+              this.cdr.detectChanges();
+              return mensajeAnterior;
+            });
+            console.log("nuevo!!");
+            console.log("chat ", this.chat);
+            this.scrollUltimoHijo();
+
+            return data;
+          });
+
       } else {
         console.warn('payload.new vacío');
       }
@@ -65,19 +98,22 @@ export class MensajeriaComponent implements OnInit {
   };
 
   async enviarMensajes() {
-  if (this.auth.usuarioActual) {
-    console.log("mi email", this.auth.usuarioActual.email);
-    await this.supabaseService.obtenerUsuarioMail(this.auth.usuarioActual.email!)
-      .then(({ data, error }) => {
-        this.miId = data![0].id;
-        this.nombreActual = data![0].nombre;
-        console.log("enviar, data", data);
-        this.mensajesService.insertar(this.new_mensaje, data![0].id);
-        this.new_mensaje = "";
-        return data;
-      });
+    if (this.auth.usuarioActual) {
+      console.log("mi email", this.auth.usuarioActual.email);
+      await this.supabaseService.obtenerUsuarioMail(this.auth.usuarioActual.email!)
+        .then(({ data, error }) => {
+          this.miId = data![0].id;
+          this.nombreActual = data![0].nombre;
+          console.log("enviar, data", data);
+          this.mensajesService.insertar(this.new_mensaje, data![0].id);
+          this.new_mensaje = "";
+          console.log("obtengo ultimo mensaje del usuario...");
+          return data;
+        });
+    }
   }
-}
+
+
 
 
   // const canal = this.sb.supabase.channel("db-changes")

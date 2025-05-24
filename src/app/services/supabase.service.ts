@@ -51,6 +51,7 @@ export class SupabaseService {
   }
 
     async obtenerUsuarioMail(mail: string) {
+      console.log("consulto usuario x mail...");
     return this.supabase.from("usuarios")
     .select("*").eq("mail", mail);
     // .order("created_at", {ascending: true});
