@@ -1,1 +1,21 @@
-<p>preguntados works!</p>
+
+<!-- <ul *ngFor="let personaje of personaje()">
+    <li>{{personaje.character}}</li>
+
+</ul> -->
+<h1 class="text-center">Preguntados</h1>
+<h2> Puntaje: {{puntaje}}</h2>
+@if (this.bandera()){
+    <div class="container-sm text-center p-2" *ngIf="this.personaje()[0]">
+            <img src={{personaje()[0].image}} alt="">
+    
+            <div class="container button-container">
+                <div class="d-flex flex-column p-2" *ngFor="let n of aleatorio"> 
+                    <button class="btn btn-lg btn-info" (click)="consultarPersonaje(n)">{{n}}</button>
+                </div>
+            </div>
+    </div>
+} @else {
+    <h2> Cargando ...</h2>
+}
+
