@@ -1,1 +1,11 @@
-<p>mi-juego works!</p>
+<h2>puntaje: {{puntaje}}</h2>
+<h3>Tiempo (s): {{contador()}}</h3>
+<h3>{{mensaje}}</h3>
+<h1>Cuenta: {{x1()}} {{tipoOperador}} {{x2()}} = {{respuesta}}</h1>
+
+<input [(ngModel)]="respuesta" type="text" (keyup.enter)="responder()" placeholder="tu respuesta">
+
+<div class="d-flex gap-3 m-3">
+    <button class="btn btn-lg btn-info" (click)="responder()">Responder</button>
+    <button class="btn btn-lg btn-info" (click)="comenzar()">comenzar</button>
+</div>

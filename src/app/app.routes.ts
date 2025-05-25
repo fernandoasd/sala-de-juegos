@@ -9,7 +9,7 @@ import { AboutComponent } from './pages/about/about.component';
 // denegar o permitir la denegacion de ciertas paginas
 
 export const routes: Routes = [
-        {
+    {
         path: "home",
         redirectTo: "/juegos/miJuego",
         pathMatch: "full"
