@@ -20,8 +20,8 @@ export class MayorOMenorComponent {
 
   constructor() {
     this.cartas = [];
-    this.numeros = [1, 12, 11, 10, 9, 8, 7, 6, 5, 4];
-    this.figuras = ["espada", "basto", "copa", "oro"]
+    this.numeros = [];
+    this.figuras = []
     this.cartaActual = {
       numero: 0,
       figura: ""
@@ -32,6 +32,8 @@ export class MayorOMenorComponent {
   }
 
   ngOnInit() {
+    this.numeros = [1, 12, 11, 10, 9, 8, 7, 6, 5, 4];
+    this.figuras = ["espada", "basto", "copa", "oro"]
     this.cargarArray();
     this.iniciarJuego();
 

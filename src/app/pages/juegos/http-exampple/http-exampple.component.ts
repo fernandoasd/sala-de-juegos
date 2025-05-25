@@ -11,17 +11,27 @@ import { CommonModule } from '@angular/common';
 })
 export class HttpExamppleComponent {
   httpService = inject(HttpService);
-  datos=  signal<any[]>([]);
+  datos = signal<any[]>([]);
+
 
   ngOnInit() {
-    const texto = this.httpService.prueba();
+    const texto = this.prueba();
     console.log(texto);
-    const subscription = this.httpService.traerDatosClima().subscribe((respuesta) => {
+    const subscription = this.traerDatosClima().subscribe((respuesta) => {
       console.log("Respuesta: ");
       console.log(respuesta);
       this.datos.set([respuesta]);
       console.log("desuscribime...");
       subscription.unsubscribe();
     });
+  }
+
+  traerDatosClima() {
+    const observable = this.httpService.httpClient.get<any>("https://goweather.xyz/weather/" + "Avellaneda");
+    return observable;
+  }
+
+  prueba() {
+    return "esto es una prueba";
   }
 }

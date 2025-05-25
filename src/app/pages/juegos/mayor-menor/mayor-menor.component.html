@@ -1,1 +1,26 @@
-<p>mayor-menor works!</p>
+<div class="container">
+    
+    <div class="d-flex justify-content-center">
+        @if (cartaActual()[0]) {
+            <img src={{cartaActual()[0].image}} alt="carta actual">
+            <img src={{cartaSiguiente()[0].image}} alt="carta siguiente">
+        }
+        
+    </div>
+    
+    <h1>Puntaje: {{puntaje}}</h1>
+    
+    @if (estadoJuego == "jugando") {
+    <h2>La siguiente carta será:</h2>
+        <button class="btn btn-lg btn-warning m-1" (click)="elegirMenor()">Menor</button>
+        <button class="btn btn-lg btn-success m-1" (click)="elegirMayor()">Mayor</button>
+    } @else {
+        <h1> Esperando ...</h1>
+    }
+
+</div>
+
+
+<!-- <button class="btn btn-success m-1"(click)="compararCartas()">Mayor</button> -->
+<!-- <button class="btn btn-warning m-1" (click)="iniciarJuego()">Reiniciar</button>
+<h3>puntaje: {{puntaje}}</h3> -->

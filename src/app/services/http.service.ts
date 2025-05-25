@@ -6,23 +6,11 @@ import { inject, Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class HttpService {
-  private httpClient = inject(HttpClient);
+  public httpClient = inject(HttpClient);
 
   constructor() { 
-    const observable = this.httpClient.get<any>("https://goweather.xyz/weather/"+"Avellaneda")
-  
-    // observable.subscribe((respuesta) => {
-    //   console.log("API");
-    //   console.log(respuesta);
-    // })
+
   }
 
-  traerDatosClima(){
-    const observable = this.httpClient.get<any>("https://goweather.xyz/weather/"+"Avellaneda");
-    return observable;
-  }
 
-  prueba(){
-    return "esto es una prueba";
-  }
 }
