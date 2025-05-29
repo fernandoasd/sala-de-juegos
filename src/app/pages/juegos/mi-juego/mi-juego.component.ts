@@ -1,11 +1,12 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Operacion } from './operador.interface';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-mi-juego',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './mi-juego.component.html',
   styleUrl: './mi-juego.component.css'
 })
@@ -29,27 +30,33 @@ export class MiJuegoComponent implements OnInit {
   gotaEndX = 80;
   gotaYStart = 75;
   gotaYEnd = 14;
-
+  pausa = signal<boolean>(false);
+  claseMensaje = "";
 
 
   constructor() {
   }
 
   ngOnInit() {
-    this.comenzar();
+    this.inicializarJuego();
     console.log("INIT");
     // this.x1 = this.inicializarVariables();
     // this.x2 = this.inicializarVariables();
   }
 
-  comenzar() {
-    this.pausarJuego(true);
+  inicializarJuego() {
+    this.contador.set(0);
+    this.mensaje = "";
+    this.claseMensaje = "bg-secondary";
+    this.pasarSiguienteGota();
 
+  }
+
+  pasarSiguienteGota() {
+    this.pausarJuego(true);
+    this.respuesta = "";
     this.gotaX.set(this.gotaXStart);
     this.gotaY.set(this.gotaYStart);
-
-    this.respuesta = "";
-    this.contador.set(0);
     const [n1, n2, op] = this.inicializarVariables();
     this.x1.set(n1);
     this.x2.set(n2);
@@ -128,6 +135,7 @@ export class MiJuegoComponent implements OnInit {
 
   responder() {
     this.detenerContador();
+    this.mensaje = this.x1()+" "+this.tipoOperador+" "+this.x2()+" = "+this.resultado;
     if (Number(this.respuesta) == this.resultado) {
       this.ganar();
     } else {
@@ -137,14 +145,16 @@ export class MiJuegoComponent implements OnInit {
 
   perder() {
     this.puntaje -= 1;
-    this.mensaje = "nope, resultado= " + this.resultado
+    this.mensaje = this.x1()+" "+this.tipoOperador+" "+this.x2()+" = "+this.resultado;
+    this.claseMensaje = "bg-danger"
     this.pausarJuego();
   }
 
   ganar() {
     this.puntaje += 1;
-    this.mensaje = "Correcto!"
-    this.comenzar();
+    this.mensaje = this.x1()+" "+this.tipoOperador+" "+this.x2()+" = "+this.resultado;
+    this.claseMensaje = "bg-success"
+    this.pasarSiguienteGota();
   }
 
   iniciarContador() {
@@ -162,10 +172,13 @@ export class MiJuegoComponent implements OnInit {
     if (pausar) {
       clearInterval(this.contadorSegundos);
       clearInterval(this.intervaloMovimiento);
+      this.pausa.set(false);
     } else {
       this.iniciarContador();
       this.iniciarMovimiento(0, -3);
+      this.pausa.set(true);
     }
+    console.log("pausa ", this.pausa());
   }
 
 
