@@ -10,8 +10,8 @@ import { AboutComponent } from './pages/about/about.component';
 
 export const routes: Routes = [
     {
-        path: "home",
-        redirectTo: "/juegos/miJuego",
+        path: "",
+        redirectTo: "home",
         pathMatch: "full"
     },
     {

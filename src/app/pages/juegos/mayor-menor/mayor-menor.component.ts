@@ -26,16 +26,22 @@ export class MayorMenorComponent {
   cartasRestantes: number = 0;
   cartaActual = signal<Carta[]>([]);
   cartaSiguiente = signal<Carta[]>([]);
+  cartaAnteriorUno = signal<Carta[]>([]);
+  cartaAnteriorDos = signal<Carta[]>([]);
   baraja: Baraja[] = [];
   exito: boolean = false;
   eleccion: Comparacion.Mayor | Comparacion.Menor = Comparacion.Mayor;
   comparacion: Comparacion = Comparacion.Iguales;
   estadoJuego: EstadoJuego = EstadoJuego.Esperando;
   puntaje: number = 0;
+  dorsoCarta = "https://deckofcardsapi.com/static/img/back.png"
+  dorsoCartaSedundaria = "";
+  respuestaAnterior = "";
+  claseJugadaAnterior = "";
 
-constructor(private cdr: ChangeDetectorRef){
+  constructor(private cdr: ChangeDetectorRef) {
 
-}
+  }
 
   async ngOnInit() {
     console.clear();
@@ -94,7 +100,7 @@ constructor(private cdr: ChangeDetectorRef){
       console.log("1: ", this.cartaActual()[0].value, " 2: ", this.cartaSiguiente()[0].value);
       this.comparacion = this.compararCartas();
       this.estadoJuego = EstadoJuego.Jugando;
-      console.log("this.estadoJuego ",this.estadoJuego);
+      console.log("this.estadoJuego ", this.estadoJuego);
       console.log(baraja);
     });
   }
@@ -155,25 +161,26 @@ constructor(private cdr: ChangeDetectorRef){
     if (eleccion === this.comparacion) {
       this.estadoJuego = EstadoJuego.Gano;
       this.puntaje += 1;
+      this.claseJugadaAnterior = "text-success";
       console.log("Correcto");
     } else {
       if (this.comparacion === Comparacion.Iguales) {
         this.estadoJuego = EstadoJuego.Empato;
+        this.claseJugadaAnterior = "text-secondary";
         console.log("Empate");
       } else {
         this.estadoJuego = EstadoJuego.Perdio;
         console.log("Perdió");
+        this.claseJugadaAnterior = "text-danger";
         this.puntaje -= 1;
-
       }
     }
+    this.cartaAnteriorUno.set(this.cartaActual());
+    this.respuestaAnterior = this.comparacion;
+    this.cartaAnteriorDos.set(this.cartaSiguiente());
+
     this.estadoJuego = EstadoJuego.Esperando;
     this.volverAJugar();
   }
-
-
-
-
-
 
 }

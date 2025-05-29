@@ -91,6 +91,7 @@ export class AhorcadoComponent {
         console.log("boton errado");
         boton.className = this.claseBotonErrado;
       }
+      boton.setAttribute("disabled", "true");
     }
 
   }
@@ -172,9 +173,7 @@ export class AhorcadoComponent {
   presionarTecla(index: string) {
     const { arrayPalabra, acertoLetra } = this.adivinarLetra(this.abecedario[Number(index)], this.arrayPalabra);
     this.cambiarColorBoton(index, acertoLetra);
-
     this.comprobarEstadoJuego(acertoLetra, arrayPalabra);
-
   }
 
 }

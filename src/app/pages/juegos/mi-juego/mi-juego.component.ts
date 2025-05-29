@@ -27,8 +27,8 @@ export class MiJuegoComponent implements OnInit {
   gotaX = signal<number>(0);
   gotaY = signal<number>(0);
   gotaXStart = 5;
-  gotaEndX = 80;
-  gotaYStart = 75;
+  gotaXEnd = 80;
+  gotaYStart = 73;
   gotaYEnd = 14;
   pausa = signal<boolean>(false);
   claseMensaje = "";
@@ -45,6 +45,7 @@ export class MiJuegoComponent implements OnInit {
   }
 
   inicializarJuego() {
+    this.gotaX.set(this.generarRandomInt(this.gotaXStart, this.gotaXEnd));
     this.contador.set(0);
     this.mensaje = "";
     this.claseMensaje = "bg-secondary";
@@ -55,7 +56,7 @@ export class MiJuegoComponent implements OnInit {
   pasarSiguienteGota() {
     this.pausarJuego(true);
     this.respuesta = "";
-    this.gotaX.set(this.gotaXStart);
+    this.gotaX.set(this.generarRandomInt(this.gotaXStart, this.gotaXEnd));
     this.gotaY.set(this.gotaYStart);
     const [n1, n2, op] = this.inicializarVariables();
     this.x1.set(n1);
@@ -134,25 +135,27 @@ export class MiJuegoComponent implements OnInit {
   }
 
   responder() {
-    this.detenerContador();
-    this.mensaje = this.x1()+" "+this.tipoOperador+" "+this.x2()+" = "+this.resultado;
-    if (Number(this.respuesta) == this.resultado) {
-      this.ganar();
-    } else {
-      this.perder();
+    if (this.pausa() == false) {
+      this.detenerContador();
+      this.mensaje = this.x1() + " " + this.tipoOperador + " " + this.x2() + " = " + this.resultado;
+      if (Number(this.respuesta) == this.resultado) {
+        this.ganar();
+      } else {
+        this.perder();
+      }
     }
   }
 
   perder() {
     this.puntaje -= 1;
-    this.mensaje = this.x1()+" "+this.tipoOperador+" "+this.x2()+" = "+this.resultado;
+    this.mensaje = this.x1() + " " + this.tipoOperador + " " + this.x2() + " = " + this.resultado;
     this.claseMensaje = "bg-danger"
     this.pausarJuego();
   }
 
   ganar() {
     this.puntaje += 1;
-    this.mensaje = this.x1()+" "+this.tipoOperador+" "+this.x2()+" = "+this.resultado;
+    this.mensaje = this.x1() + " " + this.tipoOperador + " " + this.x2() + " = " + this.resultado;
     this.claseMensaje = "bg-success"
     this.pasarSiguienteGota();
   }
@@ -172,11 +175,11 @@ export class MiJuegoComponent implements OnInit {
     if (pausar) {
       clearInterval(this.contadorSegundos);
       clearInterval(this.intervaloMovimiento);
-      this.pausa.set(false);
+      this.pausa.set(true);
     } else {
       this.iniciarContador();
       this.iniciarMovimiento(0, -3);
-      this.pausa.set(true);
+      this.pausa.set(false);
     }
     console.log("pausa ", this.pausa());
   }

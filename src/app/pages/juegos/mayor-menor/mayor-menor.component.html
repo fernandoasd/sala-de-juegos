@@ -1,21 +1,30 @@
 <div class="container">
-    
-    <div class="d-flex justify-content-center">
+
+    <div class="container d-flex justify-content-center">
         @if (cartaActual()[0]) {
-            <img src={{cartaActual()[0].image}} alt="carta actual">
-            <img src={{cartaSiguiente()[0].image}} alt="carta siguiente">
+        <img src={{cartaActual()[0].image}} alt="carta actual">
+        <h1 class="m-5 pt-5 ">?</h1>
+        <img src={{dorsoCarta}} alt="carta siguiente">
         }
-        
     </div>
-    
+
     <h1>Puntaje: {{puntaje}}</h1>
-    
+
     @if (estadoJuego == "jugando") {
-    <h2>La siguiente carta será:</h2>
-        <button class="btn btn-lg btn-warning m-1" (click)="elegirMenor()">Menor</button>
-        <button class="btn btn-lg btn-success m-1" (click)="elegirMayor()">Mayor</button>
+    <h2>La carta actual, con respecto a la siguiente, es:</h2>
+    <button class="btn btn-lg btn-warning m-1" (click)="elegirMenor()">Menor</button>
+    <button class="btn btn-lg btn-success m-1" (click)="elegirMayor()">Mayor</button>
     } @else {
-        <h1> Esperando ...</h1>
+    <h1> Esperando ...</h1>
+    }
+
+    @if (cartaAnteriorUno()[0]) {
+    <h3 class="text-center" [ngClass]="claseJugadaAnterior">Jugada Anterior:</h3>
+    <div class="container d-flex justify-content-center" [ngClass]="claseJugadaAnterior">
+        <img src={{cartaAnteriorUno()[0].image}} alt="carta actual">
+        <h1 class="m-5 pt-5 ">{{respuestaAnterior}}</h1>
+        <img src={{cartaAnteriorDos()[0].image}} alt="carta siguiente">
+    </div>
     }
 
 </div>
