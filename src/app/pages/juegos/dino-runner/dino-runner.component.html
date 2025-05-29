@@ -1,0 +1,11 @@
+<p>dino-runner works!</p>
+<div class="game-container">
+  <div class="dino" [style.bottom.px]="dinoBottom"></div>
+  <div class="obstacle" [style.left.px]="obstacleLeft"></div>
+  <div class="score">Puntaje: {{ score }}</div>
+
+  <div class="overlay" *ngIf="gameOver">
+    <h2>¡Perdiste!</h2>
+    <button (click)="restart()">Reintentar</button>
+  </div>
+</div> 

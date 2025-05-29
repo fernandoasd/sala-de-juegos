@@ -1,0 +1,26 @@
+.game-cantainer {
+    position: relative;
+    height: 70vh;
+    width: 90%;
+    background-image: url("./assets/fondo-cielo-2.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.raindrop {
+    background-image: url("./assets/gota-6.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    padding-top: 3vh;
+    /* background: #4fc3f7; */
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-align: center;
+    height: 13vh;
+    min-width: 10vw;
+    max-width: 160px;
+    line-height: 1.2;
+}

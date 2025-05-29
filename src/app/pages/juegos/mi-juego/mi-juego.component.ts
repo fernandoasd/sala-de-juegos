@@ -20,7 +20,17 @@ export class MiJuegoComponent implements OnInit {
   respuesta = "";
   mensaje = "";
   puntaje = 0;
-  intervalId: any;
+  contadorSegundos: any;
+  intervaloMovimiento: any;
+  tasaRefresco: number = 300;
+  gotaX = signal<number>(0);
+  gotaY = signal<number>(0);
+  gotaXStart = 5;
+  gotaEndX = 80;
+  gotaYStart = 75;
+  gotaYEnd = 14;
+
+
 
   constructor() {
   }
@@ -33,7 +43,11 @@ export class MiJuegoComponent implements OnInit {
   }
 
   comenzar() {
-    clearInterval(this.intervalId);
+    this.pausarJuego(true);
+
+    this.gotaX.set(this.gotaXStart);
+    this.gotaY.set(this.gotaYStart);
+
     this.respuesta = "";
     this.contador.set(0);
     const [n1, n2, op] = this.inicializarVariables();
@@ -42,12 +56,24 @@ export class MiJuegoComponent implements OnInit {
     this.operador = op;
     this.tipoOperador = this.transcribirTipoOperador(this.operador);
     this.resultado = this.realizarCuenta(this.x1(), this.x2(), this.operador);
-    console.log(this.x1(), this.operador ,this.x2()," = ", this.resultado);
-    this.iniciarContador();
+    console.log(this.x1(), this.operador, this.x2(), " = ", this.resultado);
+    this.pausarJuego(false);
   }
 
+
+
   ngOnDestroy(): void {
-    clearInterval(this.intervalId);
+    clearInterval(this.contadorSegundos);
+  }
+
+  iniciarMovimiento(posX: number, posY: number) {
+    this.intervaloMovimiento = setInterval(() => {
+      this.gotaX.set(this.gotaX() + posX);
+      this.gotaY.set(this.gotaY() + posY);
+      if (this.gotaY() <= this.gotaYEnd) {
+        this.perder();
+      }
+    }, this.tasaRefresco)
   }
 
   inicializarVariables() {
@@ -57,13 +83,13 @@ export class MiJuegoComponent implements OnInit {
     return [x1, x2, operador];
   }
 
-  generarRandomInt(min: number, max: number){
+  generarRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  transcribirTipoOperador(operador: Operacion){
+  transcribirTipoOperador(operador: Operacion) {
     let tipoOperador = "";
-    switch (operador){
+    switch (operador) {
       case 1:
         tipoOperador = "+";
         break;
@@ -100,29 +126,46 @@ export class MiJuegoComponent implements OnInit {
     return resultado;
   }
 
-
-
   responder() {
     this.detenerContador();
     if (Number(this.respuesta) == this.resultado) {
-      this.puntaje += 1;
-      this.mensaje = "Correcto!"
+      this.ganar();
     } else {
-      this.puntaje -= 1;
-      this.mensaje = "nope, resultado= " + this.resultado
+      this.perder();
     }
+  }
+
+  perder() {
+    this.puntaje -= 1;
+    this.mensaje = "nope, resultado= " + this.resultado
+    this.pausarJuego();
+  }
+
+  ganar() {
+    this.puntaje += 1;
+    this.mensaje = "Correcto!"
     this.comenzar();
   }
 
   iniciarContador() {
-    this.intervalId = setInterval(() => {
+    this.contadorSegundos = setInterval(() => {
       this.contador.set(this.contador() + 1);
       // console.log("contador ", this.contador);
     }, 1000);
   }
 
   detenerContador() {
-    clearInterval(this.intervalId);
+    clearInterval(this.contadorSegundos);
+  }
+
+  pausarJuego(pausar: boolean = true) {
+    if (pausar) {
+      clearInterval(this.contadorSegundos);
+      clearInterval(this.intervaloMovimiento);
+    } else {
+      this.iniciarContador();
+      this.iniciarMovimiento(0, -3);
+    }
   }
 
 

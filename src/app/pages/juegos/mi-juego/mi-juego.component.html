@@ -1,11 +1,16 @@
-<h2>puntaje: {{puntaje}}</h2>
-<h3>Tiempo (s): {{contador()}}</h3>
-<h3>{{mensaje}}</h3>
-<h1>Cuenta: {{x1()}} {{tipoOperador}} {{x2()}} = {{respuesta}}</h1>
+<div class="container-fluid game-cantainer  bg-info">
+    <div class="d-flex justify-content-end gap-1">
+        <h5 class="bg-dark p-1">TIEMPO {{contador()}}s</h5>
+        <h5 class="bg-dark p-1">PUNTOS {{puntaje}}</h5>
+    </div>
+    <h3>{{mensaje}}</h3>
 
-<input [(ngModel)]="respuesta" type="text" (keyup.enter)="responder()" placeholder="tu respuesta">
+    <h1 class="raindrop d-flex justify-content-center align-items-center text-light" [style.left.%]="gotaX()" [style.bottom.%]="gotaY()" >{{x1()}}{{tipoOperador}}{{x2()}}</h1>
 
-<div class="d-flex gap-3 m-3">
-    <button class="btn btn-lg btn-info" (click)="responder()">Responder</button>
-    <button class="btn btn-lg btn-info" (click)="comenzar()">comenzar</button>
+    <input [(ngModel)]="respuesta" type="text" (keyup.enter)="responder()" placeholder="tu respuesta">
+
+    <div class="d-flex justify-content-center gap-3 m-3">
+        <button class="btn btn-lg btn-info" (click)="responder()">Responder</button>
+        <button class="btn btn-lg btn-info" (click)="comenzar()">comenzar</button>
+    </div>
 </div>

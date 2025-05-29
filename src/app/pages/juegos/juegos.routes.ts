@@ -5,6 +5,7 @@ import { MiJuegoComponent } from "./mi-juego/mi-juego.component";
 import { PreguntadosComponent } from "./preguntados/preguntados.component";
 import { HttpExamppleComponent } from "./http-exampple/http-exampple.component";
 import { MayorMenorComponent } from "./mayor-menor/mayor-menor.component";
+import { DinoRunnerComponent } from "./dino-runner/dino-runner.component";
 
 const routes: Routes = [
     { path: "ahorcado", title: "Ahorcado", component: AhorcadoComponent },
@@ -12,8 +13,9 @@ const routes: Routes = [
     { path: "preguntados", title: "Preguntados", component: PreguntadosComponent },
     { path: "miJuego", title: "Mi Juego", component: MiJuegoComponent },
     { path: "httpExample", title: "Ejemplo HTTP", component: HttpExamppleComponent },
-    { path: "mayor-menor", title: "mayor-menor", component: MayorMenorComponent }
-
+    { path: "mayor-menor", title: "mayor-menor", component: MayorMenorComponent },
+    { path: "dino-runner", title: "dino-runner", component: DinoRunnerComponent }
+    
 
 ]
 
