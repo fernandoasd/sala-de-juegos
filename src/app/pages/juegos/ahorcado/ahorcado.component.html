@@ -1,5 +1,6 @@
-<div class="container m-1">
-    <h2 class="text-center m-2">Ahorcado</h2> <h2 class="text-end text-success">Puntos: {{puntuacion}}</h2>
+<div class="container-fluid m-1">
+    <h2 class="text-center m-2">Ahorcado</h2>
+    <h2 class="text-end text-success">Puntos: {{puntuacion}}</h2>
     <h3 class="text-center mb-5">Intentos restantes: {{intentos}} / {{intentosMax}}</h3>
     <div [ngStyle]='{
         "height": "40vh",
@@ -32,17 +33,19 @@
 
     </div>
     } @else {
-    <div class="alerta-container" [ngClass]='{
+    <div class="alerta-container text-center" [ngClass]='{
             "bg-danger": estadoJuego === "perdido",
             "bg-success": estadoJuego === "ganado"
         }'>
         <h1>{{mensaje}}</h1>
+        <button class="btn btn-lg btn-info m-1" (click)="inicializarJuego()"> Reiniciar</button>
+
     </div>
     }
 </div>
-
+<!-- 
 <div class="d-flex justify-content-center mt-5">
     <button class="btn btn-info m-1" (click)="ganarJuego()"> Ganar</button>
     <button class="btn btn-info m-1" (click)="perderJuego()"> Perder</button>
     <button class="btn btn-info m-1" (click)="inicializarJuego()"> Reiniciar</button>
-</div>
+</div> -->

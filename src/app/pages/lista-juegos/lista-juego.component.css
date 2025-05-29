@@ -1,4 +1,26 @@
     .card img {
       height: 200px;
       object-fit: cover;
+      
+    }
+
+    .imagen {
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .mayor-menor{
+      background-image: url("../../..//assets/mayor-menor.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 200px;
+      object-fit: contain;
+    }
+
+    .mayor-menor{
+      background-image: url("../../..//assets/mayor-menor.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 200px;
+      object-fit: contain;
     }

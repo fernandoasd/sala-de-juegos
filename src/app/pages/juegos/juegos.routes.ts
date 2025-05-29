@@ -15,8 +15,6 @@ const routes: Routes = [
     { path: "httpExample", title: "Ejemplo HTTP", component: HttpExamppleComponent },
     { path: "mayor-menor", title: "mayor-menor", component: MayorMenorComponent },
     { path: "dino-runner", title: "dino-runner", component: DinoRunnerComponent }
-    
-
 ]
 
 export { routes };

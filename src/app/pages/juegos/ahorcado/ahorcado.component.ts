@@ -166,7 +166,7 @@ export class AhorcadoComponent {
   }
 
   perderJuego() {
-    this.mensaje = "Game Over!\nPerdiste 1 puntos."
+    this.mensaje = "Game Over!\nPerdiste 1 punto."
     this.puntuacion -= 1;
     this.estadoJuego = EstadoJuego.Perdido;
   }

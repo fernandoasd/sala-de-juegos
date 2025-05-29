@@ -1,11 +1,11 @@
 <h1 class="text-center">Gotas de Lluvia</h1>
 <div class="game-cantainer d-flex flex-column">
-    <h1 class="raindrop d-flex justify-content-center align-items-center text-light" [style.left.%]="gotaX()"
+    <h1 class="raindrop d-flex justify-content-center align-items-center text-dark fs-3" [style.left.%]="gotaX()"
         [style.bottom.%]="gotaY()" [style.left.%]="gotaX()">{{x1()}}{{tipoOperador}}{{x2()}}</h1>
 
     <div class="d-flex justify-content-end gap-1 me-1">
-        <button *ngIf="this.pausa() === false" class="me-auto btn btn-success m-1 bi bi-play-circle fs-5" (click)="pausarJuego(false)" > Play</button>
-        <button *ngIf="this.pausa() === true" class="me-auto btn btn-primary m-1 bi bi-pause-circle fs-5" (click)="pausarJuego()"> Pause</button>
+        <button *ngIf="this.pausa() === true" class="me-auto btn btn-success m-1 bi bi-play-circle fs-5" (click)="pausarJuego(false)" > Play</button>
+        <button *ngIf="this.pausa() === false" class="me-auto btn btn-primary m-1 bi bi-pause-circle fs-5" (click)="pausarJuego()"> Pause</button>
 
         <h3 class="me-auto flex-grow-1 text-center bg-secondary border p-1 fs-4" [ngClass]="this.claseMensaje">{{mensaje}}</h3>
         <h5 class="bg-dark p-1">TIEMPO {{contador()}}s</h5>

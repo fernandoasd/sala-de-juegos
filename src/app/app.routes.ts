@@ -22,7 +22,7 @@ export const routes: Routes = [
     {
         path: "about",
         title: "About Me",
-        component: AboutComponent
+        loadComponent: () => import("./pages/about/about.component").then((archivo) => archivo.AboutComponent)
     },
     {
         path: "login",
@@ -48,7 +48,7 @@ export const routes: Routes = [
     },
     {
         path: "juegos", title: "Juegos", loadComponent: () => import("./pages/juegos/juegos.component").then((archivo) => archivo.JuegosComponent),
-        loadChildren: () => import("./pages/juegos/juegos.routes").then((archivo) => archivo.routes),
+        loadChildren: () => import("./pages/juegos/modulo-juegos/modulo-juegos.module").then((archivo) => archivo.ModuloJuegosModule),
         canActivate: [logueadoGuard]
     },
     {
