@@ -32,28 +32,34 @@ export class AuthService {
 
   //crear cuenta
   async crearCuenta(correo: string, contraseña: string) {
-    const { data, error } = await this.sb.supabase.auth.signUp({
-      email: correo,
-      password: contraseña
-    });
-    console.log("aunth, crear cuenta:",data, error);
-    return {data, error};
+    try {
+      const { data, error } = await this.sb.supabase.auth.signUp({
+        email: correo,
+        password: contraseña
+      });
+      console.log("aunth, crear cuenta:", data, "error :", error, "status:  ", error?.status);
+    return { data, error };
+
+    } catch (er) {
+      return { er };
+    }
+    
   }
   //iniciar sesión
   async iniciarSesion(correo: string, contraseña: string) {
-    const {data, error } = await this.sb.supabase.auth.signInWithPassword({
+    const { data, error } = await this.sb.supabase.auth.signInWithPassword({
       email: correo,
       password: contraseña
     });
     this.nombre = correo.split('@')[0];;
-    console.log("aunth, iniciar sesion:",data, error);
+    console.log("aunth, iniciar sesion:", data, error);
     return { data, error };
   }
 
   //cerrar cesión
   async cerrarSesion() {
     const { error } = await this.sb.supabase.auth.signOut()
-    console.log("aunth, cerrar sesion:",error);
-    return {error};
+    console.log("aunth, cerrar sesion:", error);
+    return { error };
   }
 }

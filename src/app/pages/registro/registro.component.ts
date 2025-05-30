@@ -15,7 +15,7 @@ export class RegistroComponent {
   auth = inject(AuthService);
   tablaUsuario = inject(UsuarioService);
   data: any[] | null = null;
-  error= signal<AuthError | null>(null);
+  error = signal<string>("");
 
   mail: string = "";
   contrasenia: string = "";
@@ -28,10 +28,28 @@ export class RegistroComponent {
     const respuesta = await this.auth.crearCuenta(this.mail, this.contrasenia);
     if (respuesta.error === null) {
       this.tablaUsuario.crear(new Usuario(this.mail.toLowerCase(), this.contrasenia,
-         this.nombre, this.urlImage, this.edad));
+        this.nombre, this.urlImage, this.edad));
     } else {
-      this.error.set(respuesta.error);
+
+      // this.error.set(respuesta.error);
       this.hayError = true;
+
+      switch (respuesta.error?.status) {
+        case 400:
+          this.error.set("Se requiere una contraseña válida.");
+          break;
+        case 401:
+          this.error.set("Solicitud inválida");
+          break;
+        case 403:
+          this.error.set("Prohibido: No tenés permiso");
+          break;
+        case 422:
+          this.error.set("La contraseña debe tener al menos 6 dígitos");
+          break;
+        default:
+          this.error.set("🔄 Error desconocido. Error Status: "+ respuesta.error?.status);
+      }
     }
   }
 }
