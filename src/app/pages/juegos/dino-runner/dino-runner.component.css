@@ -1,6 +1,6 @@
 .game-container {
   position: relative;
-  width: 600px;
+  width: 900px;
   height: 200px;
   border: 2px solid #000;
   overflow: hidden;
@@ -11,15 +11,15 @@
 .dino {
   position: absolute;
   left: 50px;
-  width: 40px;
+  width: 70px;
   height: 40px;
   background-color: green;
 }
 
 .obstacle {
   position: absolute;
-  bottom: 0;
-  width: 20px;
+  bottom: 0; 
+  width: 130px;
   height: 40px;
   background-color: red;
 }

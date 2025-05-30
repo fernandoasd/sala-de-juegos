@@ -30,7 +30,7 @@ export class DinoRunnerComponent implements OnInit {
     this.interval = setInterval(() => {
       this.obstacleLeft -= 1;
       if (this.obstacleLeft < -20) {
-        this.obstacleLeft = 500;
+        this.obstacleLeft = 900;
         this.score++;
       }
 
@@ -50,14 +50,14 @@ export class DinoRunnerComponent implements OnInit {
     this.isJumping = true;
     let jumpHeight = 0;
     const jumpUp = setInterval(() => {
-      if (jumpHeight >= 100) {
+      if (jumpHeight >= 150) {
         clearInterval(jumpUp);
         const fallDown = setInterval(() => {
           if (jumpHeight <= 0) {
             clearInterval(fallDown);
             this.isJumping = false;
           } else {
-            jumpHeight -= 0.75;
+            jumpHeight -= 0.55;
             this.dinoBottom = jumpHeight;
           }
         }, 3);
@@ -70,7 +70,7 @@ export class DinoRunnerComponent implements OnInit {
 
   restart() {
     this.dinoBottom = 0;
-    this.obstacleLeft = 500;
+    this.obstacleLeft = 900;
     this.score = 0;
     this.gameOver = false;
     this.startGame();
