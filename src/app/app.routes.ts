@@ -11,7 +11,7 @@ import { AboutComponent } from './pages/about/about.component';
 export const routes: Routes = [
     {
         path: "",
-        redirectTo: "home",
+        redirectTo: "registro",
         pathMatch: "full"
     },
     {
@@ -50,6 +50,13 @@ export const routes: Routes = [
         path: "juegos", title: "Juegos", loadComponent: () => import("./pages/juegos/juegos.component").then((archivo) => archivo.JuegosComponent),
         loadChildren: () => import("./pages/juegos/modulo-juegos/modulo-juegos.module").then((archivo) => archivo.ModuloJuegosModule),
         canActivate: [logueadoGuard]
+    },
+    {
+        path: "encuesta",
+        title: "Encuesta",
+        loadComponent: () => import("./pages/encuesta/encuesta.component").then((archivo) => archivo.EncuestaComponent),
+        canActivate: [logueadoGuard]
+
     },
     {
         path: "**",

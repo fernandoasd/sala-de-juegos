@@ -1,0 +1,14 @@
+@if (control() !== undefined){
+
+    @if (control()!.touched){
+        <div *ngIf='control()?.hasError("required")' class="text-danger">
+            El {{this.nombre()}} es necesario.
+        </div>
+        <div *ngIf='control()?.hasError("minlength")'>
+            El {{this.nombre()}} es muy corto.
+        </div>
+        <div *ngIf='control()?.hasError("maxlength")'>
+            El {{this.nombre()}} es muy largo.
+        </div>
+    }
+}
