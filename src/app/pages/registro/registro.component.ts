@@ -55,7 +55,7 @@ export class RegistroComponent {
         Validators.required,
         Validators.pattern(/^\d+$/),
         Validators.min(18),
-        Validators.max(125)
+        Validators.max(99)
       ]
     })
   })
