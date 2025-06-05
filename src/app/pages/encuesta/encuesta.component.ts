@@ -4,6 +4,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import Swal from 'sweetalert2';
 import { UsuarioService } from '../../services/usuario.service';
 import { AuthService } from '../../services/auth.service';
+import { SupabaseService } from '../../services/supabase.service';
 
 @Component({
   selector: 'app-encuesta',
@@ -14,6 +15,8 @@ import { AuthService } from '../../services/auth.service';
 export class EncuestaComponent {
   usuarios = inject(UsuarioService);
   auth = inject(AuthService);
+  sb = inject(SupabaseService);
+
   usuarioActual = signal<any[] | null>([]);
   encuesta: FormGroup | null = null;
   encuestaCargada = signal<boolean>(false);
@@ -29,7 +32,6 @@ export class EncuestaComponent {
 
       console.log("usuario no guardado en la BBDD");
     }
-    console.log("Usuario actual: ", this.usuarioActual()![0]);
   }
 
 
@@ -66,7 +68,7 @@ export class EncuestaComponent {
           Validators.required,
         ]
       }),
-      recomiendaPagina: new FormControl("0"),
+      recomiendaPagina: new FormControl(false),
       comentario: new FormControl("", {
         validators: [
           Validators.required,
@@ -77,7 +79,8 @@ export class EncuestaComponent {
   }
 
 
-  enviar() {
+  async enviar() {
+    this.encuesta?.markAllAsTouched(); 
     console.log(this.encuesta);
     if (this.encuesta!.valid) {
       console.log("Se puede enviar");
@@ -91,7 +94,12 @@ export class EncuestaComponent {
         denyButtonText: `Cancelar`
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire("Enviada", "Gracias por responder.", 'success');
+          this.guardarEncuesta().then(([data, error])=>{
+            Swal.fire("Enviada", "Gracias por responder.", 'success');
+            console.log("data ", data);
+            console.log("error ", error);
+
+          });
         }
       });
 
@@ -102,5 +110,15 @@ export class EncuestaComponent {
         text: "Compruebe los campos requeridos"
       });
     }
+  }
+
+  async guardarEncuesta(){
+    console.log(this.encuesta);
+    console.log("nombre", this.encuesta?.get("nombre")?.value);
+    console.log("recomiendaPagina", this.encuesta?.get("recomiendaPagina")?.value);
+
+    const {data, error} = await this.sb.supabase.from("encuestas").insert({id_usuario: this.usuarioActual()![0].id, juegoFavorito: this.encuesta?.get("juegoFavorito")?.value, recomiendaPagina: this.encuesta?.get("recomiendaPagina")?.value, comentario: this.encuesta?.get("comentario")?.value});
+    console.log(data);
+    return [data, error];
   }
 }
