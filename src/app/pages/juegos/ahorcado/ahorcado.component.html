@@ -1,9 +1,11 @@
 <div class="container-fluid m-1">
     <h2 class="text-center m-2">Ahorcado</h2>
-    <div class="text-end">
-        <button type="button" class="bi bi-floppy btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+    <div class="text-end gap-1">
+        <button type="button" class="bi bi-list-ol btn btn-lg btn-primary m-1" data-bs-toggle="modal" data-bs-target="#myModal">
             Ranking</button>
-        <h2 class="text-end text-success m-1">Puntos: {{puntuacion()}}</h2>
+        <button type="button" class="bi bi-floppy btn btn-success btn-lg" (click)="guardarRanking()">
+            Guardar Progreso</button>
+        <h2 class="text-end text-success m-1">Puntos: {{puntuacion()}}</h2> 
     </div>
 
 </div>
@@ -63,6 +65,7 @@
 
             <!-- Modal body -->
             <div class="modal-body">
+                @if(this.nuevoRanking()[0] != null && this.nuevoRanking()[0].data.length > 0){
                 <table class="table table-bordered table-striped">
                     <thead class="table-dark">
                         <tr>
@@ -83,6 +86,10 @@
                         </tr>
                     </tbody>
                 </table>
+                } @else {
+                <p class="text-danger"> No hay datos en ranking para este jeugo...</p>
+                }
+
             </div>
 
             <!-- Modal footer -->

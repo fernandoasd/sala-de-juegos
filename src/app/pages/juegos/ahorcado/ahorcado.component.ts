@@ -97,8 +97,13 @@ export class AhorcadoComponent {
           console.log("datos: ", datos.data[0]);
 
         }
+        this.ranking.obtenerRanking(this.juego).then((ranking) => {
+          this.nuevoRanking.set([ranking]);
+          console.log("Ranking: ", this.nuevoRanking()[0].data);
+          console.log("Ranking: null? ", this.nuevoRanking()[0].data.length == 0);
+
+        })
         this.inicializarJuego();
-        // this.guardarRanking();
         return datos.data![0];
       });
     });
@@ -106,8 +111,9 @@ export class AhorcadoComponent {
   }
 
   inicializarJuego() {
-    this.puntuacion.set(0);
+    // this.puntuacion.set(0);
     this.intentos = 0;
+    this.imagenUrl = this.images[0];
     const arrayPalabraSeleccionada = this.elegirPalabra(this.bancoPalabras);
     this.arrayPalabra = this.separarPalabraEnArray(arrayPalabraSeleccionada);
     this.estadoJuego = EstadoJuego.Jugando;
@@ -221,8 +227,7 @@ export class AhorcadoComponent {
     return await this.ranking.insertarRanking(this.usuarioActual[0].id, this.juego, this.puntuacion()).then(() => {
       return this.ranking.obtenerRanking(this.juego).then((ranking) => {
         this.nuevoRanking.set([ranking]);
-        console.log("this.nuevoRanking(): ", this.nuevoRanking()[0].data);
-        // Swal.fire("Ranking", "Progreso guardado en el Ranking: \n"+texto, "success");
+        Swal.fire("Ranking", "Progreso guardado en el Ranking:", "success");
         return ranking;
       });
     });
