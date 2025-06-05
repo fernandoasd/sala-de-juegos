@@ -30,6 +30,8 @@ export class AuthService {
     });
   }
 
+
+
   //crear cuenta
   async crearCuenta(correo: string, contraseña: string) {
     try {
@@ -38,12 +40,12 @@ export class AuthService {
         password: contraseña
       });
       console.log("aunth, crear cuenta:", data, "error :", error, "status:  ", error?.status);
-    return { data, error };
+      return { data, error };
 
     } catch (er) {
       return { er };
     }
-    
+
   }
   //iniciar sesión
   async iniciarSesion(correo: string, contraseña: string) {
@@ -61,5 +63,10 @@ export class AuthService {
     const { error } = await this.sb.supabase.auth.signOut()
     console.log("aunth, cerrar sesion:", error);
     return { error };
+  }
+
+  async traerUsuarioActual() {
+    let mailUsuariOActual = this.usuarioActual?.email;
+    return (await this.usuariosService.buscarUsuarioMail(mailUsuariOActual!)).data![0];
   }
 }

@@ -1,12 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { Usuario } from '../classes/usuario';
+import { RankingService } from './ranking.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
   db = inject(SupabaseService);
+
   usuarioActual: any[] = [];
   tablaUsuarios;
 

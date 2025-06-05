@@ -1,8 +1,14 @@
-import { Component } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Letra } from "./letra.interface";
 import { EstadoJuego } from "./estadoJuego.enum";
 import { CommonModule } from "@angular/common";
+import { SupabaseService } from "../../../services/supabase.service";
+import { UsuarioService } from "../../../services/usuario.service";
+import { AuthService } from "../../../services/auth.service";
+import { RankingService } from "../../../services/ranking.service";
+import { Juego } from "../../../enum/juegos.enum";
+import Swal from "sweetalert2";
 
 
 
@@ -16,6 +22,13 @@ import { CommonModule } from "@angular/common";
 
 
 export class AhorcadoComponent {
+  sp = inject(SupabaseService);
+  usuarios = inject(UsuarioService);
+  ranking = inject(RankingService);
+  auth = inject(AuthService);
+
+  juego = Juego.ahorcado;
+  usuarioActual: any[] = [];
   abecedario: any[];
   bancoPalabras: string[];
   arrayPalabra: Letra[];
@@ -28,11 +41,15 @@ export class AhorcadoComponent {
   claseBotonAcertado: string;
   images: string[];
   imagenUrl: string;
-  puntuacion: number;
+  puntuacion = signal<number>(0);
+  nuevoRanking = signal<any[]>([]);
+
+
 
 
 
   constructor() {
+
 
     this.images = [
       "https://zvfexktcpppuodwshfeb.supabase.co/storage/v1/object/sign/images/games/ahorcado/hangman-0.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzY4Nzk5MWY2LWVjYTgtNDE5Ny1hZTViLTkzM2FkZmY5YjQ4NyJ9.eyJ1cmwiOiJpbWFnZXMvZ2FtZXMvYWhvcmNhZG8vaGFuZ21hbi0wLnBuZyIsImlhdCI6MTc0Nzk1NzYyOCwiZXhwIjoxNzc5NDkzNjI4fQ.DEmXblYGEzLbtMtuEjVrtpzoIqND6LvfBRo1XMRTZiE",
@@ -64,14 +81,32 @@ export class AhorcadoComponent {
     this.claseBotonAcertado = "btn btn-lg btn-success m-1";
     this.imagenUrl = this.images[0];
     console.log(this.imagenUrl);
-    this.puntuacion = 0;
   }
 
-  ngOnInit(): void {
-    this.inicializarJuego();
+  ngOnInit() {
+    this.auth.traerUsuarioActual().then((usuario) => {
+      this.usuarioActual = [usuario];
+      console.log("11 usuario: ", this.usuarioActual);
+      this.ranking.obtenerPuntosRanking(this.usuarioActual[0].id, this.juego).then((datos) => {
+        console.log("datos.data![0]: ", datos.data![0])
+        console.log("usuario: ", this.usuarioActual[0]);
+
+        if (datos.data == null) {
+          console.log("ranking esta vacío");
+        } else {
+          console.log("datos: ", datos.data[0]);
+
+        }
+        this.inicializarJuego();
+        // this.guardarRanking();
+        return datos.data![0];
+      });
+    });
+
   }
 
   inicializarJuego() {
+    this.puntuacion.set(0);
     this.intentos = 0;
     const arrayPalabraSeleccionada = this.elegirPalabra(this.bancoPalabras);
     this.arrayPalabra = this.separarPalabraEnArray(arrayPalabraSeleccionada);
@@ -142,34 +177,70 @@ export class AhorcadoComponent {
   }
 
   comprobarEstadoJuego(acertoLetra: boolean, arrayPalabra: Letra[]) {
+    let mensaje = "";
+    let puntos = 0;
+    let estadoJuego = EstadoJuego.Jugando;
     if (acertoLetra) {
       console.log("acertaste!");
-      if (this.comprobarSiGano(arrayPalabra))
-        this.ganarJuego();
-
+      if (this.comprobarSiGano(arrayPalabra)) {
+        mensaje = "Felicidades, ganaste!\nSumaste 1 punto!!!.";
+        puntos = 1;
+        estadoJuego = EstadoJuego.Ganado;
+        this.finalizarJuego(mensaje, puntos, estadoJuego);
+      }
     } else {
       this.intentos += 1;
       this.imagenUrl = this.images[this.intentos];
-      if (this.intentos >= this.intentosMax)
-        this.perderJuego();
-      else
+      if (this.intentos >= this.intentosMax) {
+        mensaje = "Game Over!\nPerdiste 1 punto.";
+        puntos = -1;
+        estadoJuego = EstadoJuego.Perdido;
+        this.finalizarJuego(mensaje, puntos, estadoJuego);
+        this.guardarRanking().then(({ data }) => {
+          console.log("Ranking: ", data);
+
+        });
+
+      } else {
         console.log("fallaste!, te quedan :", this.intentos);
+      }
     }
     console.log(this.arrayPalabra);
     console.log("intentos ", this.intentos);
   }
 
+  finalizarJuego(mensaje: string, puntos: number, estadoJuego: EstadoJuego) {
+    this.mensaje = mensaje;
+    this.puntuacion.set(this.puntuacion() + puntos);
+    this.estadoJuego = estadoJuego;
+    console.log("actualizar: ", this.usuarioActual[0].id, Juego.ahorcado, this.puntuacion());
+  }
+
+
+  async guardarRanking() {
+    return await this.ranking.insertarRanking(this.usuarioActual[0].id, this.juego, this.puntuacion()).then(() => {
+      return this.ranking.obtenerRanking(this.juego).then((ranking) => {
+        this.nuevoRanking.set([ranking]);
+        console.log("this.nuevoRanking(): ", this.nuevoRanking()[0].data);
+        // Swal.fire("Ranking", "Progreso guardado en el Ranking: \n"+texto, "success");
+        return ranking;
+      });
+    });
+  }
+
+
   ganarJuego() {
     this.mensaje = "Felicidades, ganaste!\nSumaste 1 punto!!!."
-    this.puntuacion += 1;
+    this.puntuacion.set(this.puntuacion() + 1);
     this.estadoJuego = EstadoJuego.Ganado;
   }
 
   perderJuego() {
     this.mensaje = "Game Over!\nPerdiste 1 punto."
-    this.puntuacion -= 1;
+    this.puntuacion.set(this.puntuacion() - 1);
     this.estadoJuego = EstadoJuego.Perdido;
   }
+
   presionarTecla(index: string) {
     const { arrayPalabra, acertoLetra } = this.adivinarLetra(this.abecedario[Number(index)], this.arrayPalabra);
     this.cambiarColorBoton(index, acertoLetra);

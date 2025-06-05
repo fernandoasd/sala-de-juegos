@@ -1,48 +1,103 @@
 <div class="container-fluid m-1">
     <h2 class="text-center m-2">Ahorcado</h2>
-    <h2 class="text-end text-success">Puntos: {{puntuacion}}</h2>
-    <h3 class="text-center mb-5">Intentos restantes: {{intentos}} / {{intentosMax}}</h3>
-    <div [ngStyle]='{
+    <div class="text-end">
+        <button type="button" class="bi bi-floppy btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+            Ranking</button>
+        <h2 class="text-end text-success m-1">Puntos: {{puntuacion()}}</h2>
+    </div>
+
+</div>
+<h3 class="text-center mb-5">Intentos restantes: {{intentos}} / {{intentosMax}}</h3>
+<div [ngStyle]='{
         "height": "40vh",
         "background-image": "url("+imagenUrl+")",
         "background-position": "center",
         "background-repeat": "no-repeat"
     }'>
 
+</div>
+@if (estadoJuego === "jugando") {
+<div class="display-teclado-container text-center g-1">
+    <div class="dontainer mt-5 mb-5">
+        <h1>
+            @for (item of arrayPalabra; track $index) {
+            @if (item.adivinada){
+            <h1 class="d-inline m-2">{{item.letra.toUpperCase()}} </h1>
+            } @else {
+            <h1 class="d-inline m-2">_ </h1>
+            }
+            }
+        </h1>
     </div>
-    @if (estadoJuego === "jugando") {
-    <div class="display-teclado-container text-center g-1">
-        <div class="dontainer mt-5 mb-5">
-            <h1>
-                @for (item of arrayPalabra; track $index) {
-                @if (item.adivinada){
-                <h1 class="d-inline m-2">{{item.letra.toUpperCase()}} </h1>
-                } @else {
-                <h1 class="d-inline m-2">_ </h1>
-                }
-                }
-            </h1>
-        </div>
 
 
-        @for (letra of abecedario; track $index) {
-        <button class="{{claseInitBoton}}" (click)="presionarTecla($index.toString())" id="btn-{{$index}}">
-            {{letra.toUpperCase()}}</button>
-        }
+    @for (letra of abecedario; track $index) {
+    <button class="{{claseInitBoton}}" (click)="presionarTecla($index.toString())" id="btn-{{$index}}">
+        {{letra.toUpperCase()}}</button>
+    }
 
 
-    </div>
-    } @else {
-    <div class="alerta-container text-center" [ngClass]='{
+</div>
+} @else {
+<div class="alerta-container text-center" [ngClass]='{
             "bg-danger": estadoJuego === "perdido",
             "bg-success": estadoJuego === "ganado"
         }'>
-        <h1>{{mensaje}}</h1>
-        <button class="btn btn-lg btn-info m-1" (click)="inicializarJuego()"> Reiniciar</button>
+    <h1>{{mensaje}}</h1>
+    <button class="btn btn-lg btn-info m-1" (click)="inicializarJuego()"> Reiniciar</button>
 
-    </div>
-    }
 </div>
+}
+
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Ranking</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>ID Usuario</th>
+                            <th>Puntos</th>
+                            <th>ID Juego</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of this.nuevoRanking()[0].data">
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.created_at | date: 'short' }}</td>
+                            <td>{{ item.id_usuario }}</td>
+                            <td>{{ item.puntos }}</td>
+                            <td>{{ item.id_juego }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
 <!-- 
 <div class="d-flex justify-content-center mt-5">
     <button class="btn btn-info m-1" (click)="ganarJuego()"> Ganar</button>

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef, inject } from '@angular/core';
+import { SupabaseService } from '../../../services/supabase.service';
 
 @Component({
   selector: 'app-dino-runner',
@@ -41,6 +42,9 @@ export class DinoRunnerComponent implements OnInit {
       }
       this.cdr.detectChanges();
     }, 3);
+  }
+
+  finalizarJuego(){
   }
 
   @HostListener('document:keydown.a')

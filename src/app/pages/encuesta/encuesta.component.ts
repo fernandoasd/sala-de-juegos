@@ -98,7 +98,6 @@ export class EncuestaComponent {
             Swal.fire("Enviada", "Gracias por responder.", 'success');
             console.log("data ", data);
             console.log("error ", error);
-
           });
         }
       });

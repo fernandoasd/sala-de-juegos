@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { UsuarioService } from './usuario.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,9 @@ export class SupabaseService {
     throw new Error('Method not implemented.');
   }
   supabase: SupabaseClient<any, "public", any>;
+
+
+
 
 
   constructor() {
@@ -46,16 +50,21 @@ export class SupabaseService {
 
   async obtenerMensajes() {
     return this.supabase.from("mensajes")
-    .select("id, created_at ,mensaje, usuarios(id, nombre)");
+      .select("id, created_at ,mensaje, usuarios(id, nombre)");
     // .order("created_at", {ascending: true});
   }
 
-    async obtenerUsuarioMail(mail: string) {
-      console.log("consulto usuario x mail...");
+  async obtenerUsuarioMail(mail: string) {
+    console.log("consulto usuario x mail...");
     return this.supabase.from("usuarios")
-    .select("*").eq("mail", mail);
+      .select("*").eq("mail", mail);
     // .order("created_at", {ascending: true});
   }
+
+
+
+
+
 
 
 }
