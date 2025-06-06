@@ -8,5 +8,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './lista-juego.component.css'
 })
 export class ListaJuegoComponent {
-
+  ngOnInit(){
+    console.log("Lista de juegos");
+  }
 }

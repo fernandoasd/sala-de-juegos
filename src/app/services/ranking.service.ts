@@ -13,7 +13,6 @@ export class RankingService {
     return await this.db.supabase.from("ranking").select("*").eq("id_juego", idJuego).eq("id_usuario", idUsuario).order("puntos", { ascending: true });
   }
 
-
   async obtenerRanking(idJuego: number) {
     return await this.db.supabase.from("ranking").select("*").eq("id_juego", idJuego).order("puntos", { ascending: false });
   }
@@ -28,5 +27,4 @@ export class RankingService {
     console.log("modificar", data, error, count, status, statusText);
     return { data, error, count, status, statusText };
   }
-
 }

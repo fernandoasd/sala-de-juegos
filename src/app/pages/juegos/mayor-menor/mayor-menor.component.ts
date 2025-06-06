@@ -2,24 +2,39 @@ import { ChangeDetectorRef, Component, inject, signal, Signal } from '@angular/c
 import { HttpService } from '../../../services/http.service';
 import { CommonModule } from '@angular/common';
 import { Baraja, Carta, Comparacion, EstadoJuego } from './mayor-menor.interface';
-
-
-
+import Swal from 'sweetalert2';
+import { AuthService } from '../../../services/auth.service';
+import { RankingService } from '../../../services/ranking.service';
+import { SupabaseService } from '../../../services/supabase.service';
+import { UsuarioService } from '../../../services/usuario.service';
+import { RankingComponent } from '../../ranking/ranking.component';
+import { Juego } from '../../../enum/juegos.enum';
 
 
 @Component({
   selector: 'app-mayor-menor',
-  imports: [CommonModule],
+  imports: [CommonModule, RankingComponent],
   templateUrl: './mayor-menor.component.html',
   styleUrl: './mayor-menor.component.css'
 })
 
 
 export class MayorMenorComponent {
+
+  sp = inject(SupabaseService);
+  usuarios = inject(UsuarioService);
+  ranking = inject(RankingService);
+  auth = inject(AuthService);
+
   httpService = inject(HttpService);
+  nuevoRanking = signal<any[]>([]);
+
+
   cantidadBarajas: number = 1;
   repartirInicio: number = 2;
   repartirJugando: number = 1;
+  juego = Juego.mayorMenor;
+  usuarioActual = signal<any[]>([]);
 
   deck_id: string = "-";
   https: string = "https://deckofcardsapi.com/api/deck/";
@@ -33,7 +48,7 @@ export class MayorMenorComponent {
   eleccion: Comparacion.Mayor | Comparacion.Menor = Comparacion.Mayor;
   comparacion: Comparacion = Comparacion.Iguales;
   estadoJuego: EstadoJuego = EstadoJuego.Esperando;
-  puntaje: number = 0;
+  puntuacion = signal<number>(0);
   dorsoCarta = "https://deckofcardsapi.com/static/img/back.png"
   dorsoCartaSedundaria = "";
   respuestaAnterior = "";
@@ -44,6 +59,9 @@ export class MayorMenorComponent {
   }
 
   async ngOnInit() {
+    this.auth.traerUsuarioActual().then((usuario) => {
+      this.usuarioActual.set([usuario]);
+    });
     console.clear();
     const baraja = await this.barajar(this.cantidadBarajas).subscribe((nuevaBaraja: Baraja) => {
       if (nuevaBaraja.success) {
@@ -157,19 +175,68 @@ export class MayorMenorComponent {
   adivinar(eleccion: Comparacion.Mayor | Comparacion.Menor) {
     if (eleccion === this.comparacion) {
       this.estadoJuego = EstadoJuego.Gano;
-      this.puntaje += 1;
+      this.puntuacion.set(this.puntuacion() +1)
       this.claseJugadaAnterior = "text-success";
+      Swal.fire({
+        title: '',
+        text: 'Suma +1 punto',
+        // imageUrl: this.cartaSiguiente()[0].image,
+        html: `
+          <h3 class="text-center text-success" >Correcto    +1 punto</h3>
+          <div class="container d-flex justify-content-center text-success">
+              <img src=${this.cartaActual()[0].image} style="width: 150px; height: auto;" alt="carta actual">
+              <h1 class="m-5 pt-5 ">${this.comparacion}</h1>
+              <img src=${this.cartaSiguiente()[0].image} style="width: 150px; height: auto;" alt="carta siguiente">
+          </div>
+          `,
+
+        // imageWidth: 200,
+        // imageHeight: 200,
+        // imageAlt: 'cart'
+      });
+
       console.log("Correcto");
     } else {
       if (this.comparacion === Comparacion.Iguales) {
         this.estadoJuego = EstadoJuego.Empato;
         this.claseJugadaAnterior = "text-secondary";
+
+        Swal.fire({
+          title: '',
+          html: `
+          <h3 class="text-center text-secondary" >Empate     no gana ni peirde puntos</h3>
+          <div class="container d-flex justify-content-center text-secondary">
+              <img src=${this.cartaActual()[0].image} style="width: 150px; height: auto;" alt="carta actual">
+              <h1 class="m-5 pt-5 ">${this.comparacion}</h1>
+              <img src=${this.cartaSiguiente()[0].image} style="width: 150px; height: auto;" alt="carta siguiente">
+          </div>
+          `,
+        });
+
         console.log("Empate");
       } else {
         this.estadoJuego = EstadoJuego.Perdio;
         console.log("Perdió");
+
         this.claseJugadaAnterior = "text-danger";
-        this.puntaje -= 1;
+        this.puntuacion.set(this.puntuacion() -1)
+        Swal.fire({
+          title: '',
+          html: `
+          <h3 class="text-center text-danger" >Perdó      -1 punto</h3>
+          <p> Se guarda el progreso y se vuelve a comenzar</p>
+          <div class="container d-flex justify-content-center text-danger">
+              <img src=${this.cartaActual()[0].image} style="width: 150px; height: auto;" alt="carta actual">
+              <h1 class="m-5 pt-5 ">${this.comparacion}</h1>
+              <img src=${this.cartaSiguiente()[0].image} style="width: 150px; height: auto;" alt="carta siguiente">
+          </div>
+          `,
+        });
+
+        this.guardarRanking().then(() => {
+          this.puntuacion.set(0)
+        });
+
       }
     }
     this.cartaAnteriorUno.set(this.cartaActual());
@@ -179,5 +246,15 @@ export class MayorMenorComponent {
     this.estadoJuego = EstadoJuego.Esperando;
     this.volverAJugar();
   }
+
+    async guardarRanking() {
+      return await this.ranking.insertarRanking(this.usuarioActual()[0].id, this.juego, this.puntuacion()).then(() => {
+        return this.ranking.obtenerRanking(this.juego).then((ranking) => {
+          this.nuevoRanking.set([ranking]);
+          Swal.fire("Ranking", "Progreso guardado en el Ranking:", "success");
+          return ranking;
+        });
+      }); 
+    }
 
 }

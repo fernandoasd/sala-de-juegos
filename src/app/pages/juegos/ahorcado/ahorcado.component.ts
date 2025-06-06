@@ -11,7 +11,7 @@ import { Juego } from "../../../enum/juegos.enum";
 import Swal from "sweetalert2";
 import { RankingComponent } from "../../ranking/ranking.component";
 
-
+// ahorcado
 
 @Component({
   selector: "app-ahorcado",
@@ -27,7 +27,7 @@ export class AhorcadoComponent {
   usuarios = inject(UsuarioService);
   ranking = inject(RankingService);
   auth = inject(AuthService);
-
+  
   juego = Juego.ahorcado;
   usuarioActual= signal<any[]>([]);
   abecedario: any[];

@@ -1,5 +1,8 @@
 <div class="container">
 
+    <app-ranking *ngIf="this.usuarioActual()[0] != null" [juego]="juego" [idUsuario]="this.usuarioActual()[0].id"
+        [puntuacion]="this.puntuacion()"></app-ranking>
+
     <div class="container d-flex justify-content-center">
         @if (cartaActual()[0]) {
         <img src={{cartaActual()[0].image}} alt="carta actual">
@@ -8,7 +11,7 @@
         }
     </div>
 
-    <h1>Puntaje: {{puntaje}}</h1>
+    <h1>Puntaje: {{this.puntuacion()}}</h1>
 
     @if (estadoJuego == "jugando") {
     <h2>La carta actual, con respecto a la siguiente, es:</h2>
@@ -18,14 +21,14 @@
     <h1> Esperando ...</h1>
     }
 
-    @if (cartaAnteriorUno()[0]) {
+    <!-- @if (cartaAnteriorUno()[0]) {
     <h3 class="text-center" [ngClass]="claseJugadaAnterior">Jugada Anterior:</h3>
     <div class="container d-flex justify-content-center" [ngClass]="claseJugadaAnterior">
-        <img src={{cartaAnteriorUno()[0].image}} alt="carta actual">
+        <img src={{cartaAnteriorUno()[0].image}} style="width: 200px; height: auto;" alt="carta actual">
         <h1 class="m-5 pt-5 ">{{respuestaAnterior}}</h1>
         <img src={{cartaAnteriorDos()[0].image}} alt="carta siguiente">
     </div>
-    }
+    } -->
 
 </div>
 

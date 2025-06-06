@@ -18,21 +18,26 @@ export class RankingComponent {
   ranking = inject(RankingService);
   nuevoRanking = signal<any[]>([]);
 
-  ngOnInit(){
+  ngOnInit() {
     console.log("init: ", this.nuevoRanking()[0] == null);
-    this.ranking.obtenerRanking(this.juego()).then((ranking) =>{
+    this.consultarRanking();
+  }
+
+  async guardarRanking() {
+    return await this.ranking.insertarRanking(this.idUsuario()!, this.juego(), this.puntuacion()).then(() => {
+      return this.ranking.obtenerRanking(this.juego()).then((ranking) => {
+        this.nuevoRanking.set([ranking]);
+        Swal.fire("Ranking", "Progreso guardado en el Ranking:", "success");
+        return ranking;
+      });
+    });
+  }
+
+  consultarRanking() {
+    this.ranking.obtenerRanking(this.juego()).then((ranking) => {
       this.nuevoRanking.set([ranking])
       console.log("ranking: ", this.nuevoRanking());
     })
   }
 
-  async guardarRanking() {
-      return await this.ranking.insertarRanking(this.idUsuario()!, this.juego(), this.puntuacion()).then(() => {
-        return this.ranking.obtenerRanking(this.juego()).then((ranking) => {
-          this.nuevoRanking.set([ranking]);
-          Swal.fire("Ranking", "Progreso guardado en el Ranking:", "success");
-          return ranking;
-        });
-      });
-    }
 }
