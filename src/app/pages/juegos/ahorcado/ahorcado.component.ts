@@ -9,12 +9,13 @@ import { AuthService } from "../../../services/auth.service";
 import { RankingService } from "../../../services/ranking.service";
 import { Juego } from "../../../enum/juegos.enum";
 import Swal from "sweetalert2";
+import { RankingComponent } from "../../ranking/ranking.component";
 
 
 
 @Component({
   selector: "app-ahorcado",
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RankingComponent],
   templateUrl: "./ahorcado.component.html",
   styleUrl: "./ahorcado.component.css"
 })
@@ -28,7 +29,7 @@ export class AhorcadoComponent {
   auth = inject(AuthService);
 
   juego = Juego.ahorcado;
-  usuarioActual: any[] = [];
+  usuarioActual= signal<any[]>([]);
   abecedario: any[];
   bancoPalabras: string[];
   arrayPalabra: Letra[];
@@ -43,14 +44,10 @@ export class AhorcadoComponent {
   imagenUrl: string;
   puntuacion = signal<number>(0);
   nuevoRanking = signal<any[]>([]);
-
-
-
+  idUsuarioACtual = signal<number>(0);
 
 
   constructor() {
-
-
     this.images = [
       "https://zvfexktcpppuodwshfeb.supabase.co/storage/v1/object/sign/images/games/ahorcado/hangman-0.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzY4Nzk5MWY2LWVjYTgtNDE5Ny1hZTViLTkzM2FkZmY5YjQ4NyJ9.eyJ1cmwiOiJpbWFnZXMvZ2FtZXMvYWhvcmNhZG8vaGFuZ21hbi0wLnBuZyIsImlhdCI6MTc0Nzk1NzYyOCwiZXhwIjoxNzc5NDkzNjI4fQ.DEmXblYGEzLbtMtuEjVrtpzoIqND6LvfBRo1XMRTZiE",
       "https://zvfexktcpppuodwshfeb.supabase.co/storage/v1/object/sign/images/games/ahorcado/hangman-1.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzY4Nzk5MWY2LWVjYTgtNDE5Ny1hZTViLTkzM2FkZmY5YjQ4NyJ9.eyJ1cmwiOiJpbWFnZXMvZ2FtZXMvYWhvcmNhZG8vaGFuZ21hbi0xLnBuZyIsImlhdCI6MTc0Nzk1NzcyNywiZXhwIjoxNzc5NDkzNzI3fQ.EIzerKrLxOF8G2_wyVT38IF2sFEIpmPRcOYw-9NYVL8",
@@ -69,8 +66,6 @@ export class AhorcadoComponent {
     ];
 
     this.bancoPalabras = ["programacion", "lenguaje", "aprobame"];
-
-
     this.estadoJuego = EstadoJuego.Jugando;
     this.arrayPalabra = [];
     this.intentosMax = 7;
@@ -85,29 +80,27 @@ export class AhorcadoComponent {
 
   ngOnInit() {
     this.auth.traerUsuarioActual().then((usuario) => {
-      this.usuarioActual = [usuario];
+      this.usuarioActual.set([usuario]);
+      this.idUsuarioACtual.set(this.usuarioActual()[0].id);
       console.log("11 usuario: ", this.usuarioActual);
-      this.ranking.obtenerPuntosRanking(this.usuarioActual[0].id, this.juego).then((datos) => {
+      this.ranking.obtenerPuntosRanking(this.usuarioActual()[0].id, this.juego).then((datos) => {
         console.log("datos.data![0]: ", datos.data![0])
-        console.log("usuario: ", this.usuarioActual[0]);
+        console.log("usuario: ", this.usuarioActual()[0]);
 
         if (datos.data == null) {
           console.log("ranking esta vacío");
         } else {
           console.log("datos: ", datos.data[0]);
-
         }
         this.ranking.obtenerRanking(this.juego).then((ranking) => {
           this.nuevoRanking.set([ranking]);
           console.log("Ranking: ", this.nuevoRanking()[0].data);
           console.log("Ranking: null? ", this.nuevoRanking()[0].data.length == 0);
-
         })
         this.inicializarJuego();
         return datos.data![0];
       });
     });
-
   }
 
   inicializarJuego() {
@@ -128,7 +121,6 @@ export class AhorcadoComponent {
         console.log("boton acertado");
         boton.className = this.claseBotonAcertado;
       } else {
-
         console.log("boton errado");
         boton.className = this.claseBotonErrado;
       }
@@ -219,20 +211,19 @@ export class AhorcadoComponent {
     this.mensaje = mensaje;
     this.puntuacion.set(this.puntuacion() + puntos);
     this.estadoJuego = estadoJuego;
-    console.log("actualizar: ", this.usuarioActual[0].id, Juego.ahorcado, this.puntuacion());
+    console.log("actualizar: ", this.usuarioActual()[0].id, Juego.ahorcado, this.puntuacion());
   }
 
 
   async guardarRanking() {
-    return await this.ranking.insertarRanking(this.usuarioActual[0].id, this.juego, this.puntuacion()).then(() => {
+    return await this.ranking.insertarRanking(this.usuarioActual()[0].id, this.juego, this.puntuacion()).then(() => {
       return this.ranking.obtenerRanking(this.juego).then((ranking) => {
         this.nuevoRanking.set([ranking]);
         Swal.fire("Ranking", "Progreso guardado en el Ranking:", "success");
         return ranking;
       });
-    });
+    }); 
   }
-
 
   ganarJuego() {
     this.mensaje = "Felicidades, ganaste!\nSumaste 1 punto!!!."

@@ -1,4 +1,6 @@
 <h1 class="text-center">Gotas de Lluvia</h1>
+    <app-ranking *ngIf="this.usuarioActual()[0] != null" [juego]="juego" [idUsuario]="this.usuarioActual()[0].id"
+        [puntuacion]="puntuacion"></app-ranking>
 <div class="game-cantainer d-flex flex-column">
     <h1 class="raindrop d-flex justify-content-center align-items-center text-dark fs-3" [style.left.%]="gotaX()"
         [style.bottom.%]="gotaY()" [style.left.%]="gotaX()">{{x1()}}{{tipoOperador}}{{x2()}}</h1>
@@ -9,10 +11,8 @@
 
         <h3 class="me-auto flex-grow-1 text-center bg-secondary border p-1 fs-4" [ngClass]="this.claseMensaje">{{mensaje}}</h3>
         <h5 class="bg-dark p-1">TIEMPO {{contador()}}s</h5>
-        <h5 class="bg-dark p-1">PUNTOS {{puntaje}}</h5>
+        <h5 class="bg-dark p-1">PUNTOS {{puntuacion}}</h5>
     </div>
-
-
 
     <div class="d-flex justify-content-end mt-auto gap-3 m-1">
         <input class="ms-5 fs-3 text-center text-uppercase" [(ngModel)]="respuesta" type="text" (keyup.enter)="responder()" placeholder="tu respuesta">

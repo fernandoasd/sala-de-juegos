@@ -1,16 +1,29 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Operacion } from './operador.interface';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RankingService } from '../../../services/ranking.service';
+import { Juego } from '../../../enum/juegos.enum';
+import { RankingComponent } from '../../ranking/ranking.component';
+import { AuthService } from '../../../services/auth.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
   selector: 'app-mi-juego',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RankingComponent],
   templateUrl: './mi-juego.component.html',
   styleUrl: './mi-juego.component.css'
 })
 export class MiJuegoComponent implements OnInit {
+  ranking = inject(RankingService);
+  auth = inject(AuthService);
+
+
+  juego = Juego.GotasLLuvia;
+  usuarioActual = signal<any[]>([]);
+  nuevoRanking = signal<any[]>([]);
+  
   cuenta = "8 + 7 = ";
   x1 = signal<number>(0);
   x2 = signal<number>(0);
@@ -20,7 +33,7 @@ export class MiJuegoComponent implements OnInit {
   resultado = 3;
   respuesta = "";
   mensaje = "";
-  puntaje = 0;
+  puntuacion = 0;
   contadorSegundos: any;
   intervaloMovimiento: any;
   tasaRefresco: number = 300;
@@ -38,6 +51,10 @@ export class MiJuegoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.auth.traerUsuarioActual().then((usuario) => {
+      this.usuarioActual.set([usuario]);
+    });
+
     this.inicializarJuego();
     console.log("INIT");
     // this.x1 = this.inicializarVariables();
@@ -147,14 +164,15 @@ export class MiJuegoComponent implements OnInit {
   }
 
   perder() {
-    this.puntaje -= 1;
+    this.puntuacion -= 1;
     this.mensaje = this.x1() + " " + this.tipoOperador + " " + this.x2() + " = " + this.resultado;
-    this.claseMensaje = "bg-danger"
+    this.claseMensaje = "bg-danger";
+    this.guardarRanking();
     this.pausarJuego();
   }
 
   ganar() {
-    this.puntaje += 1;
+    this.puntuacion += 1;
     this.mensaje = this.x1() + " " + this.tipoOperador + " " + this.x2() + " = " + this.resultado;
     this.claseMensaje = "bg-success"
     this.pasarSiguienteGota();
@@ -183,6 +201,16 @@ export class MiJuegoComponent implements OnInit {
     }
     console.log("pausa ", this.pausa());
   }
+
+  async guardarRanking() {
+      return await this.ranking.insertarRanking(this.usuarioActual()[0].id, this.juego, this.puntuacion).then(() => {
+        return this.ranking.obtenerRanking(this.juego).then((ranking) => {
+          this.nuevoRanking.set([ranking]);
+          Swal.fire("Ranking", "Progreso guardado en el Ranking:", "success");
+          return ranking;
+        });
+      });
+    }
 
 
 

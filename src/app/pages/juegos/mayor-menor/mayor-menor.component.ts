@@ -52,9 +52,6 @@ export class MayorMenorComponent {
         console.log("comparacion inicial:", this.comparacion);
       }
     });
-
-
-
   }
 
   iniciarBaraja(cantidadBarajas: number) {
