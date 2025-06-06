@@ -22,7 +22,8 @@ export class MayorMenorComponent {
   repartirJugando: number = 1;
 
   deck_id: string = "-";
-  https: string = "https://deckofcardsapi.com/api/deck/";
+  https: string = "/2api";
+  // https: string = "https://deckofcardsapi.com/api/deck/";
   cartasRestantes: number = 0;
   cartaActual = signal<Carta[]>([]);
   cartaSiguiente = signal<Carta[]>([]);

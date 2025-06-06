@@ -4,6 +4,8 @@
 
 </ul> -->
 <h1 class="text-center">Preguntados</h1>
+    <app-ranking *ngIf="this.usuarioActual()[0] != null" [juego]="juego" [idUsuario]="this.usuarioActual()[0].id"
+        [puntuacion]="puntaje"></app-ranking>
 <h2> Puntaje: {{puntaje}}</h2>
 @if (this.bandera()){
     <div class="container-sm text-center p-2" *ngIf="this.personaje()[0]">

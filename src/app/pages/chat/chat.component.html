@@ -1,7 +1,0 @@
-
-@for (m of mensajes(); track m.id) {
-    <p>{{m.created_at + " - " + m.usuarios?.nombre}}</p>
-    <p>{{ m.mensaje}}</p>
-}
-
-<input [(ngModel)]="nuevo_mensaje"> <button (click)="enviar()">Enviar</button>

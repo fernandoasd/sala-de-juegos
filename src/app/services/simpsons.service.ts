@@ -7,8 +7,9 @@ import { catchError } from 'rxjs';
 })
 export class SimpsonsService {
 public httpCliente = inject(HttpClient);
-private link = "https://thesimpsonsquoteapi.glitch.me/quotes";
 
+private link = "/api/quotes";
+// private link = "https://thesimpsonsquoteapi.glitch.me/quotes";
   constructor() { 
 
   }
