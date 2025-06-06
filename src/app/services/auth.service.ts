@@ -1,15 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { SupabaseService } from './supabase.service';
 import { Router } from '@angular/router';
 import { User } from "@supabase/supabase-js";
-import { Usuario } from '../classes/usuario';
 import { UsuarioService } from './usuario.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  sb = inject(SupabaseService);
   usuariosService = inject(UsuarioService);
   router = inject(Router);
   usuarioActual: User | null = null;
@@ -17,7 +14,7 @@ export class AuthService {
 
   constructor() {
     //saber si el usuario esta logueado o no
-    this.sb.supabase.auth.onAuthStateChange((event, session) => {
+    this.usuariosService.db.supabase.auth.onAuthStateChange((event, session) => {
       console.log(event, session);
       if (session === null) { //si cierra sesion o no la hay
         this.usuarioActual = null;
@@ -35,7 +32,7 @@ export class AuthService {
   //crear cuenta
   async crearCuenta(correo: string, contraseña: string) {
     try {
-      const { data, error } = await this.sb.supabase.auth.signUp({
+      const { data, error } = await this.usuariosService.db.supabase.auth.signUp({
         email: correo,
         password: contraseña
       });
@@ -49,7 +46,7 @@ export class AuthService {
   }
   //iniciar sesión
   async iniciarSesion(correo: string, contraseña: string) {
-    const { data, error } = await this.sb.supabase.auth.signInWithPassword({
+    const { data, error } = await this.usuariosService.db.supabase.auth.signInWithPassword({
       email: correo,
       password: contraseña
     });
@@ -60,7 +57,7 @@ export class AuthService {
 
   //cerrar cesión
   async cerrarSesion() {
-    const { error } = await this.sb.supabase.auth.signOut()
+    const { error } = await this.usuariosService.db.supabase.auth.signOut()
     console.log("aunth, cerrar sesion:", error);
     return { error };
   }

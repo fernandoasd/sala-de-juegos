@@ -1,6 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
-import { UsuarioService } from './usuario.service';
 import { SupabaseService } from './supabase.service';
 
 @Injectable({

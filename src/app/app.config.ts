@@ -2,15 +2,13 @@ import { ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { autorizationInterceptor } from './interceptors/autorization.interceptor';
+import { provideHttpClient, withFetch} from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(
-      withFetch(),
-      withInterceptors([autorizationInterceptor])
+      withFetch()
     )]
 };

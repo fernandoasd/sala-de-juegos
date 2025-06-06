@@ -1,6 +1,5 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { UsuarioService } from './usuario.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +11,6 @@ export class SupabaseService {
     throw new Error('Method not implemented.');
   }
   supabase: SupabaseClient<any, "public", any>;
-
-
-
 
 
   constructor() {

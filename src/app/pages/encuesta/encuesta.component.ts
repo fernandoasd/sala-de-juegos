@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { UsuarioService } from '../../services/usuario.service';
+
 import { AuthService } from '../../services/auth.service';
 import { SupabaseService } from '../../services/supabase.service';
 
@@ -13,7 +13,6 @@ import { SupabaseService } from '../../services/supabase.service';
   styleUrl: './encuesta.component.css'
 })
 export class EncuestaComponent {
-  usuarios = inject(UsuarioService);
   auth = inject(AuthService);
   sb = inject(SupabaseService);
 
@@ -23,7 +22,7 @@ export class EncuestaComponent {
 
   async ngOnInit() {
     let mailUsuariOActual = this.auth.usuarioActual?.email;
-    this.usuarioActual.set((await this.usuarios.buscarUsuarioMail(mailUsuariOActual!)).data);
+    this.usuarioActual.set((await this.auth.usuariosService.buscarUsuarioMail(mailUsuariOActual!)).data);
     console.log("usuario: ", this.usuarioActual()![0]);
     if (this.usuarioActual()![0]) {
       this.cargarEncuesta();

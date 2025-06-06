@@ -6,5 +6,9 @@ export const autorizationInterceptor: HttpInterceptorFn = (req, next) => {
   const newReq = req.clone({
     headers: req.headers.append("Authorizacion", "auth......."),
   });
+
+
+  /////////////////////////////////////////// GENERA ERROR CORS
+  
   return next(newReq);
 };

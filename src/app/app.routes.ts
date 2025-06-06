@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { logueadoGuard } from './guards/logueado.guard';
-import { AboutComponent } from './pages/about/about.component';
 // import { noLogueadoGuardGuard } from './guards/no-logueado-guard.guard';
 
 

@@ -23,6 +23,7 @@ export class PreguntadosComponent {
   usuarios = inject(UsuarioService);
   ranking = inject(RankingService);
   auth = inject(AuthService);
+  
   nuevoRanking = signal<any[]>([]);
 
   juego = Juego.preguntados;
